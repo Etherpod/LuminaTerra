@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
+  "name": "Living Planet",
+  "starSystem": "Jam4System",
+  "canShowOnTitle": false,
+  "Base": {
+    "groundSize": 200,
+    "surfaceSize": 200,
+    "surfaceGravity": 11
+  },
+  "Orbit": {
+    "primaryBody": "Jam4Sun",
+    "inclination": 27,
+    "semiMajorAxis": 10000,
+    "siderealPeriod": 10
+  },
+  "Atmosphere": {
+    "size": 350,
+    "hasOxygen": true,
+    "useAtmosphereShader": true
+  },
+  "Spawn": {
+    "playerSpawnPoints": [
+      {
+        "isDefault": true,
+        "offset": {
+          "x": 0,
+          "y": 202,
+          "z": 0
+        },
+        "startWithSuit": true
+      }
+    ],
+    "shipSpawnPoints": [
+      {
+        "isDefault": true,
+        "offset": {
+          "x": 0,
+          "y": 202,
+          "z": 10
+        }
+      }
+    ]
+  }
+}

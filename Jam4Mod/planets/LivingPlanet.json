@@ -41,5 +41,24 @@
         }
       }
     ]
+  },
+  "Props": {
+    "signals": [
+      {
+        "name": "Heart of the Planet",
+        "frequency": "Change Me Please",
+        "audio": "planets/audio/Heartbeat.mp3",
+        "onlyAudibleToScope": true,
+        "parentPath": "Sector",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "detectionRadius": 500,
+        "identificationRadius": 20
+      }
+    ]
   }
 }

@@ -47,7 +47,7 @@
       {
         "name": "Heart of the Planet",
         "frequency": "Change Me Please",
-        "audio": "planets/audio/Heartbeat.mp3",
+        "audio": "planets/audio/PlanetHeartbeat.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector",
         "isRelativeToParent": true,

@@ -4,6 +4,7 @@
   "starSystem": "Jam4System",
   "canShowOnTitle": false,
   "Base": {
+    "groundSize": 200,
     "surfaceSize": 200,
     "surfaceGravity": 11
   },
@@ -35,25 +36,13 @@
         "isDefault": true,
         "offset": {
           "x": 0,
-          "y": 210,
+          "y": 202,
           "z": 10
         }
       }
     ]
   },
   "Props": {
-    "details": [
-      {
-        "assetBundle": "planets/assets/jam4",
-        "path": "Assets/Jam4/LivingPlanet.prefab",
-        "position": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "keepLoaded": true
-      }
-    ],
     "signals": [
       {
         "name": "Heart of the Planet",

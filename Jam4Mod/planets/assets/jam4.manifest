@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 216094414
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 18bb0097139370cbe50e436a0d1cc57d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c5d8728239c5b2dfb84e4bcc6a363eb3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Jam4/Terrain_HCT_Cave_Floor_n.png
+- Assets/Jam4/Cave.mat
+- Assets/Jam4/CaveGround.mat
+- Assets/Jam4/LivingPlanet.fbx
+- Assets/Jam4/Terrain_HCT_Cave_Floor_d.png
+- Assets/Jam4/Terrain_HCT_Cave_Wall_d.png
+- Assets/Jam4/Terrain_HCT_Cave_Wall_n.png
+- Assets/Jam4/LivingPlanet.prefab
+Dependencies: []

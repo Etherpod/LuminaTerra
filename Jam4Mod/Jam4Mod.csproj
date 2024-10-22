@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+  <PropertyGroup Label="feature">
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Copyright>Copyright © 2024 Etherpod</Copyright>
@@ -9,11 +9,25 @@
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <NoWarn>MSB3270</NoWarn>
     <DebugType>portable</DebugType>
+    <Configurations>Debug;Release;ForUnity</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
-  <ItemGroup>
+
+  <ItemGroup Label="user configs">
+    <Content Include="Jam4Mod.csproj.user" />
+  </ItemGroup>
+  
+  <Target Name="CopyDLLs" AfterTargets="Build" Condition=" '$(Configuration)' == 'ForUnity' And '$(UnityProjectDirectory)' != '' ">
+    <Message Text="Copying DLL to Unity project" Importance="High" />
+    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="$(UnityProjectDirectory)/Assets/Dlls" />
+    <Message Text="Copy complete" Importance="High" />
+  </Target>
+  
+  <ItemGroup Label="dependencies">
     <PackageReference Include="OWML" Version="2.13.0" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" />
   </ItemGroup>
+  
   <ItemGroup>
     <None Include="default-config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -21,11 +35,6 @@
     <None Include="manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Jam4Mod.csproj.user" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="planets\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -42,5 +51,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  
   <ProjectExtensions><VisualStudio><UserProperties planets_4livingplanet_1json__JsonSchema="" systems_4jam4system_1json__JsonSchema="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/star_system_schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

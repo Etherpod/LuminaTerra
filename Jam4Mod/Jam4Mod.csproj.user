@@ -1,5 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
-    <OutputPath>$(AppData)/OuterWildsModManager/OWML/Mods/Etherpod.Jam4Mod</OutputPath>
+    <OuterWildsModsDirectory>$(AppData)/OuterWildsModManager/OWML/Mods</OuterWildsModsDirectory>
+    <OutputPath>$(OuterWildsModsDirectory)/Etherpod.Jam4Mod</OutputPath>
+    <UnityProjectDirectory>$(SolutionDir)/../ow-assets-fall-jam-2024</UnityProjectDirectory>
   </PropertyGroup>
 </Project>

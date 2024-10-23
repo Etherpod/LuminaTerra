@@ -4,7 +4,7 @@
   "starSystem": "Jam4System",
   "canShowOnTitle": false,
   "Base": {
-    "surfaceSize": 200,
+    "surfaceSize": 350,
     "surfaceGravity": 11
   },
   "Orbit": {
@@ -14,7 +14,7 @@
     "siderealPeriod": 10
   },
   "Atmosphere": {
-    "size": 350,
+    "size": 500,
     "hasOxygen": true,
     "useAtmosphereShader": true
   },
@@ -24,7 +24,7 @@
         "isDefault": true,
         "offset": {
           "x": 0,
-          "y": 210,
+          "y": 355,
           "z": 0
         },
         "startWithSuit": true
@@ -35,7 +35,7 @@
         "isDefault": true,
         "offset": {
           "x": 0,
-          "y": 210,
+          "y": 355,
           "z": 10
         }
       }
@@ -57,7 +57,7 @@
     "signals": [
       {
         "name": "Heart of the Planet",
-        "frequency": "Change Me Please",
+        "frequency": "Electromagnetic Waves",
         "audio": "planets/audio/PlanetHeartbeat.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector",
@@ -68,7 +68,8 @@
           "z": 0
         },
         "detectionRadius": 500,
-        "identificationRadius": 20
+        "identificationRadius": 20,
+        "sourceRadius": 20
       }
     ]
   }

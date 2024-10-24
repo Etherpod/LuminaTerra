@@ -10,6 +10,12 @@ public class HeartCrystalPulser : MonoBehaviour
     private float _minEmission = 0f;
     [SerializeField]
     private float _maxEmission = 0f;
+    [SerializeField]
+    private OWLightController _lightController;
+    [SerializeField]
+    private float _minLight;
+    [SerializeField]
+    private float _maxLight;
 
     OWEmissiveRenderer _renderer;
 
@@ -20,7 +26,10 @@ public class HeartCrystalPulser : MonoBehaviour
 
     private void Update()
     {
-        float nextEmissive = Mathf.Lerp(_minEmission, _maxEmission, (Mathf.Sin(Time.time * _pulseSpeed) + 1) / 2);
+        float sin = (Mathf.Sin(Time.timeSinceLevelLoad * _pulseSpeed) + 1) / 2;
+        float nextEmissive = Mathf.Lerp(_minEmission, _maxEmission, sin);
+        float nextLight = Mathf.Lerp(_minLight, _maxLight, sin);
         _renderer.SetEmissiveScale(nextEmissive);
+        _lightController.SetIntensity(nextLight);
     }
 }

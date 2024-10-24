@@ -1,16 +1,15 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Jam4Mod;
 
 public class HeartCrystalPulser : MonoBehaviour
 {
     [SerializeField]
-    private float _pulseSpeed;
+    private float _pulseSpeed = 0f;
     [SerializeField]
-    private float _minEmission;
+    private float _minEmission = 0f;
     [SerializeField]
-    private float _maxEmission;
+    private float _maxEmission = 0f;
 
     OWEmissiveRenderer _renderer;
 

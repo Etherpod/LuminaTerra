@@ -5,7 +5,7 @@ namespace Jam4Mod;
 public class HeartSlidesInterface : MonoBehaviour
 {
     [SerializeField]
-    private OWTriggerVolume _heartRoomTrigger;
+    private OWTriggerVolume _heartRoomTrigger = null;
 
     private MindProjectorTrigger _projector;
     private bool _hasActivated = false;

@@ -4,8 +4,8 @@ namespace Jam4Mod;
 
 public class Conductor : MonoBehaviour
 {
-  [SerializeField] private EndOfLoopController endOfLoopController;
-  [SerializeField] private OWTriggerVolume trigger;
+  [SerializeField] private EndOfLoopController endOfLoopController = null;
+  [SerializeField] private OWTriggerVolume trigger = null;
 
   private void Awake()
   {

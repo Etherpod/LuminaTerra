@@ -24,7 +24,7 @@
         "isDefault": true,
         "offset": {
           "x": 0,
-          "y": 325,
+          "y": 320,
           "z": 0
         },
         "startWithSuit": true
@@ -35,8 +35,8 @@
         "isDefault": true,
         "offset": {
           "x": 0,
-          "y": 355,
-          "z": 10
+          "y": 325,
+          "z": 15
         }
       }
     ]

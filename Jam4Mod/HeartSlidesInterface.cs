@@ -8,6 +8,8 @@ public class HeartSlidesInterface : MonoBehaviour
     [SerializeField]
     private OWTriggerVolume _heartRoomTrigger = null;
     [SerializeField]
+    private OWAudioSource _musicAudio;
+    [SerializeField]
     private OWAudioSource _oneShotAudio;
     [SerializeField]
     private OWAudioSource _loopingAudio;
@@ -25,6 +27,8 @@ public class HeartSlidesInterface : MonoBehaviour
     private void Start()
     {
         _heartRoomTrigger.OnEntry += OnEntry;
+        _projector._mindProjector.OnProjectionStart += PlayMusic;
+        _projector._mindProjector.OnProjectionStop += StopMusic;
     }
 
     private void OnEntry(GameObject hitObj)
@@ -53,8 +57,21 @@ public class HeartSlidesInterface : MonoBehaviour
         _loopingAudio.Stop();
     }
 
+    private void PlayMusic()
+    {
+        _musicAudio.time = 0f;
+        _musicAudio.FadeIn(3f);
+    }
+
+    private void StopMusic()
+    {
+        _musicAudio.FadeOut(10f);
+    }
+
     private void OnDestroy()
     {
         _heartRoomTrigger.OnEntry -= OnEntry;
+        _projector._mindProjector.OnProjectionStart -= PlayMusic;
+        _projector._mindProjector.OnProjectionStop -= StopMusic;
     }
 }

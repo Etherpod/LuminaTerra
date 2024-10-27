@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Jam4Mod;
 
@@ -7,57 +8,34 @@ public class EndOfLoopController : MonoBehaviour
 {
     private static readonly float SunScale = 0.3f;
 
-    [SerializeField] private GameObject sequenceParent = null;
     [SerializeField] private Transform playerSpawn = null;
     [SerializeField] private Transform sunSpawn = null;
-    [SerializeField] private MeshRenderer bounds = null;
+    [FormerlySerializedAs("bounds")] [SerializeField] private MeshRenderer boundsRenderer = null;
     [SerializeField] private ParticleSystem stars = null;
     [SerializeField] private GameObject[] refs = null;
-    [SerializeField] private OWAudioSource musicAudio = null;
 
     public void Awake()
     {
-        bounds.enabled = false;
+        boundsRenderer.enabled = false;
         foreach (var refObj in refs)
         {
             refObj.SetActive(false);
         }
-        sequenceParent.SetActive(false);
+        stars.Simulate(22f);
     }
 
     public void StartEOLS()
     {
-        musicAudio.Play();
-        StartCoroutine(TeleportDelay());
-    }
-
-    private IEnumerator TeleportDelay()
-    {
-        yield return new WaitUntil(() => musicAudio.time >= 29f);
-
-        FindObjectOfType<PlayerCameraEffectController>().CloseEyes(3f);
-
-        yield return new WaitUntil(() => musicAudio.time >= 32f);
-
-        sequenceParent.SetActive(true);
-
-        stars.Simulate(22f);
+        gameObject.SetActive(true);
         stars.Play();
 
         var sun = Instantiate(
-          GameObject.Find("Jam4Sun_Body/Sector/Star/Surface"),
-          sunSpawn.position,
-          sunSpawn.rotation,
-          transform
-        );
-        sun.transform.localScale = Vector3.one * SunScale;
-
-        var atmo = Instantiate(
-            GameObject.Find("Jam4Sun_Body/Sector/Star/Atmosphere_Star/AtmoSphere/Atmosphere_LOD2"),
+            GameObject.Find("Jam4Sun_Body/Sector/Star/Surface"),
             sunSpawn.position,
             sunSpawn.rotation,
-            transform);
-        atmo.transform.localScale = Vector3.one * SunScale * 1.2f;
+            transform
+        );
+        sun.transform.localScale = Vector3.one * SunScale;
 
         var player = Locator.GetPlayerBody();
         player.SetPosition(playerSpawn.position);

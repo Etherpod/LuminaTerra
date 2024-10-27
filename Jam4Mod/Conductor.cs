@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Jam4Mod;
@@ -6,6 +7,7 @@ namespace Jam4Mod;
 public class Conductor : MonoBehaviour
 {
     [SerializeField] private EndOfLoopController endOfLoopController = null;
+    [SerializeField] private OWAudioSource musicSource = null;
     [SerializeField] private OWTriggerVolume trigger = null;
 
     private bool startedSequence = false;
@@ -15,18 +17,31 @@ public class Conductor : MonoBehaviour
         trigger.OnEntry += TriggerEntered;
     }
 
+    private void OnDestroy()
+    {
+        trigger.OnEntry -= TriggerEntered;
+    }
+
     private void Update()
     {
-        if (Keyboard.current.uKey.wasPressedThisFrame && !startedSequence)
+        if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
-            endOfLoopController.StartEOLS();
+            StartCoroutine(StartEOLS());
             startedSequence = true;
         }
     }
 
-    private void OnDestroy()
+    private IEnumerator StartEOLS()
     {
-        trigger.OnEntry -= TriggerEntered;
+        musicSource.Play();
+        
+        yield return new WaitUntil(() => musicSource.time >= 29f);
+
+        FindObjectOfType<PlayerCameraEffectController>().CloseEyes(3f);
+
+        yield return new WaitUntil(() => musicSource.time >= 32f);
+        
+        endOfLoopController.StartEOLS();
     }
 
     private void TriggerEntered(GameObject hitObj)

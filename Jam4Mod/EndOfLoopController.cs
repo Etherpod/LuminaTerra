@@ -6,36 +6,30 @@ namespace Jam4Mod;
 
 public class EndOfLoopController : MonoBehaviour
 {
-    private static readonly float SunScale = 0.3f;
-
     [SerializeField] private Transform playerSpawn = null;
-    [SerializeField] private Transform sunSpawn = null;
-    [FormerlySerializedAs("bounds")] [SerializeField] private MeshRenderer boundsRenderer = null;
+    [SerializeField] private MeshRenderer boundsRenderer = null;
     [SerializeField] private ParticleSystem stars = null;
+    [SerializeField] private OWAudioSource ambientSound = null;
     [SerializeField] private GameObject[] refs = null;
+    
+    private PlayerCameraEffectController _playerCameraEffectController;
 
     public void Awake()
     {
+        _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
+        
         boundsRenderer.enabled = false;
         foreach (var refObj in refs)
         {
             refObj.SetActive(false);
         }
-        stars.Simulate(22f);
     }
 
     public void StartEOLS()
     {
         gameObject.SetActive(true);
+        stars.Simulate(22f);
         stars.Play();
-
-        var sun = Instantiate(
-            GameObject.Find("Jam4Sun_Body/Sector/Star/Surface"),
-            sunSpawn.position,
-            sunSpawn.rotation,
-            transform
-        );
-        sun.transform.localScale = Vector3.one * SunScale;
 
         var player = Locator.GetPlayerBody();
         player.SetPosition(playerSpawn.position);
@@ -46,6 +40,17 @@ public class EndOfLoopController : MonoBehaviour
         Locator.GetFlashlight().TurnOff();
         Locator.GetToolModeSwapper().UnequipTool();
 
-        FindObjectOfType<PlayerCameraEffectController>().OpenEyes(0.3f);
+        ambientSound.FadeIn(3, true);
+
+        _playerCameraEffectController.OpenEyes(0.3f);
+
+        StartCoroutine(EndEOLS());
+    }
+
+    public IEnumerator EndEOLS()
+    {
+        yield return new WaitUntil(() => ambientSound.isPlaying == false);
+        
+        _playerCameraEffectController.PlayRealityShatterEffect();
     }
 }

@@ -11,11 +11,11 @@ public class HeartCrystalPulser : MonoBehaviour
     [SerializeField]
     private float _maxEmission = 0f;
     [SerializeField]
-    private OWLightController _lightController;
+    private OWLightController _lightController = null;
     [SerializeField]
-    private float _minLight;
+    private float _minLight = 0f;
     [SerializeField]
-    private float _maxLight;
+    private float _maxLight = 0f;
 
     OWEmissiveRenderer _renderer;
 

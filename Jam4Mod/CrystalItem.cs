@@ -6,13 +6,13 @@ namespace Jam4Mod;
 public class CrystalItem : OWItem
 {
     [SerializeField]
-    private string _namePrefix;
+    private string _namePrefix = null;
     [SerializeField]
-    private GameObject _signalParent;
+    private GameObject _signalParent = null;
     [SerializeField]
-    private OWEmissiveRenderer[] _emissiveRenderers;
+    private OWEmissiveRenderer[] _emissiveRenderers = null;
     [SerializeField]
-    private bool _startCharged;
+    private bool _startCharged = false;
 
     public static ItemType ItemType;
 

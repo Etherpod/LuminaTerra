@@ -5,7 +5,7 @@ namespace Jam4Mod;
 public class CrystalEnergizer : MonoBehaviour
 {
     [SerializeField]
-    private CrystalDetector _detector;
+    private CrystalDetector _detector = null;
 
     private void Start()
     {

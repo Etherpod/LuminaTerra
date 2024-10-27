@@ -8,14 +8,14 @@ public class HeartSlidesInterface : MonoBehaviour
     [SerializeField]
     private OWTriggerVolume _heartRoomTrigger = null;
     [SerializeField]
-    private OWAudioSource _musicAudio;
+    private OWAudioSource _musicAudio = null;
     [SerializeField]
-    private OWAudioSource _oneShotAudio;
+    private OWAudioSource _oneShotAudio = null;
     [SerializeField]
-    private OWAudioSource _loopingAudio;
+    private OWAudioSource _loopingAudio = null;
 
-    private MindProjectorTrigger _projector;
-    private Animator _animator;
+    private MindProjectorTrigger _projector = null;
+    private Animator _animator = null;
     private bool _hasActivated = false;
 
     private void Awake()

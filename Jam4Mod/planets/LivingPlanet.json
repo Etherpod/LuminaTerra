@@ -83,6 +83,45 @@
           "y": 0.25,
           "z": 0
         }
+      },
+      {
+        "name": "Blue Crystal",
+        "frequency": "Electromagnetic Waves",
+        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "onlyAudibleToScope": true,
+        "parentPath": "Sector/LivingPlanet/Crystals/BlueCrystal_Item/Signal",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0.25,
+          "z": 0
+        }
+      },
+      {
+        "name": "Green Crystal",
+        "frequency": "Electromagnetic Waves",
+        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "onlyAudibleToScope": true,
+        "parentPath": "Sector/LivingPlanet/Crystals/GreenCrystal_Item/Signal",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0.25,
+          "z": 0
+        }
+      },
+      {
+        "name": "Purple Crystal",
+        "frequency": "Electromagnetic Waves",
+        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "onlyAudibleToScope": true,
+        "parentPath": "Sector/LivingPlanet/Crystals/PurpleCrystal_Item/Signal",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0.25,
+          "z": 0
+        }
       }
     ]
   }

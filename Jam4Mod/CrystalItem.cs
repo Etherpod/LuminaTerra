@@ -9,11 +9,16 @@ public class CrystalItem : OWItem
     [SerializeField]
     private GameObject _signalParent;
     [SerializeField]
+    private OWEmissiveRenderer[] _emissiveRenderers;
+    [SerializeField]
     private bool _startCharged;
 
     public static ItemType ItemType;
 
     private bool _charged;
+    private float _fadeLength = 1f;
+    private float _fadeT;
+    private bool _fading = false;
 
     public override void Awake()
     {
@@ -26,7 +31,33 @@ public class CrystalItem : OWItem
         if (!_startCharged)
         {
             _signalParent.SetActive(false);
-            // Set emission
+            SetEmissiveScale(0f);
+        }
+        else
+        {
+            _signalParent.SetActive(true);
+            SetEmissiveScale(1f);
+        }
+    }
+
+    private void Update()
+    {
+        if (_fading)
+        {
+            SetEmissiveScale(Mathf.InverseLerp(0, _fadeLength, _fadeT));
+
+            if (_charged && _fadeT < _fadeLength)
+            {
+                _fadeT += Time.deltaTime;
+            }
+            else if (!_charged && _fadeT > 0)
+            {
+                _fadeT -= Time.deltaTime;
+            }
+            else
+            {
+                _fading = false;
+            }
         }
     }
 
@@ -35,7 +66,15 @@ public class CrystalItem : OWItem
         _charged = newState;
 
         _signalParent.SetActive(_charged);
-        // Set emission
+        _fading = true;
+    }
+
+    private void SetEmissiveScale(float scale)
+    {
+        foreach (var rend in _emissiveRenderers)
+        {
+            rend.SetEmissiveScale(scale);
+        }
     }
 
     public override string GetDisplayName()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Jam4Mod;
 
@@ -19,6 +20,7 @@ public class CrystalItem : OWItem
     private float _fadeLength = 1f;
     private float _fadeT;
     private bool _fading = false;
+    private List<CrystalDetector> _currentDetectors = [];
 
     public override void Awake()
     {
@@ -44,29 +46,60 @@ public class CrystalItem : OWItem
     {
         if (_fading)
         {
-            SetEmissiveScale(Mathf.InverseLerp(0, _fadeLength, _fadeT));
+            SetEmissiveScale(Mathf.InverseLerp(0f, 1f, _fadeT));
 
-            if (_charged && _fadeT < _fadeLength)
+            if (_charged && _fadeT < 1f)
             {
-                _fadeT += Time.deltaTime;
+                _fadeT += Time.deltaTime / _fadeLength;
             }
-            else if (!_charged && _fadeT > 0)
+            else if (!_charged && _fadeT > 0f)
             {
-                _fadeT -= Time.deltaTime;
+                _fadeT -= Time.deltaTime / _fadeLength;
             }
             else
             {
+                _signalParent.SetActive(_charged);
                 _fading = false;
             }
         }
     }
 
-    public void SetCharged(bool newState)
+    public override void DropItem(Vector3 position, Vector3 normal, Transform parent, Sector sector, IItemDropTarget customDropTarget)
+    {
+        base.DropItem(position, normal, parent, sector, customDropTarget);
+        Collider[] results = Physics.OverlapCapsule(transform.position, transform.position + transform.up, 0.25f);
+        if (results.Length > 0)
+        {
+            foreach (var col in results)
+            {
+                if (col.gameObject.TryGetComponent(out CrystalDetector detector))
+                {
+                    _currentDetectors.Add(detector);
+                    detector.OnEntry(this);
+                }
+            }
+        }
+    }
+
+    public override void PickUpItem(Transform holdTranform)
+    {
+        base.PickUpItem(holdTranform);
+        foreach (var detector in _currentDetectors)
+        {
+            detector.OnExit(this);
+        }
+    }
+
+    public void SetCharged(bool newState, float fadeLength = 1f)
     {
         _charged = newState;
-
-        _signalParent.SetActive(_charged);
+        _fadeLength = fadeLength;
         _fading = true;
+    }
+
+    public bool IsLit()
+    {
+        return _charged && _fadeT >= 1f;
     }
 
     private void SetEmissiveScale(float scale)

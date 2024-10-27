@@ -1,0 +1,119 @@
+﻿<AstroObjectEntry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/shiplog_schema.xsd">
+  <ID>LIVING_PLANET</ID>
+
+  <Entry>
+    <ID>VISION_REALM</ID>
+    <Name>Vision Realm</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+    <IsCuriosity/>
+    <IgnoreMoreToExplore/>
+
+    <ExploreFact>
+      <ID>VISION_REALM_ENTER</ID>
+      <Text>I woke up in a void filled with stars after losing consciousness. The crystal heart and this system's Sun were also there.</Text>
+    </ExploreFact>
+    <ExploreFact>
+      <ID>VISION_REALM_DEATH</ID>
+      <Text>The stars started to disappear until the Sun was the only remaining star. Shortly afterwards the Sun also died, leaving me in complete darkness.</Text>
+    </ExploreFact>
+  </Entry>
+
+  <Entry>
+    <ID>STRANGE_HOUSE</ID>
+    <Name>Strange House</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <ExploreFact>
+      <ID>STRANGE_HOUSE_ENTER</ID>
+      <Text>I found a lone house on the pole of the planet. Inside is a hole in the floor that leads to a dark tunnel.</Text>
+    </ExploreFact>
+  </Entry>
+
+  <Entry>
+    <ID>CRYSTAL_HEART</ID>
+    <Name>Crystal Heart</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <RumorFact>
+      <ID>CRYSTAL_HEART_TUNNEL</ID>
+      <SourceID>STRANGE_HOUSE</SourceID>
+      <RumorName>Dark Tunnel</RumorName>
+      <Text>I found a cave underneath a house that appears to lead further underground.</Text>
+    </RumorFact>
+
+    <ExploreFact>
+      <ID>CRYSTAL_HEART_FIND</ID>
+      <Text>I found a large chamber at the center of the planet. There was a large, white crystal floating in the center of the room emitting a signal on the Electromagnetic Waves frequency.</Text>
+    </ExploreFact>
+
+    <Entry>
+      <ID>HEART_INTERFACE</ID>
+      <Name>Crystal Interface</Name>
+      <Curiosity>VISION_REALM</Curiosity>
+      <IgnoreMoreToExplore/>
+
+      <ExploreFact>
+        <ID>HEART_INTERFACE_FIND</ID>
+        <Text>A pillar of crystal emerged from the ground after I entered the room.</Text>
+      </ExploreFact>
+      <ExploreFact>
+        <ID>HEART_INTERFACE_VISION</ID>
+        <Text>The Crystal Heart started transmitting information into the pillar. It showed me a vision of what looked like the past and the future.</Text>
+        <!--REGISTER SLIDES-->
+      </ExploreFact>
+    </Entry>
+  </Entry>
+
+  <Entry>
+    <ID>CRYSTAL_WORKSHOP</ID>
+    <Name>Crystal Workshop</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <RumorFact>
+      <ID>CRYSTAL_WORKSHOP_TUNNEL</ID>
+      <SourceID>CRYSTAL_HEART</SourceID>
+      <RumorName>Dark Tunnel</RumorName>
+      <Text>A dark tunnel leading out of the central chamber.</Text>
+    </RumorFact>
+  </Entry>
+
+  <Entry>
+    <ID>CRYSTAL_ENERGIZER</ID>
+    <Name>Crystal Workshop</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <RumorFact>
+      <ID>CRYSTAL_ENERGIZER_TUNNEL</ID>
+      <SourceID>CRYSTAL_HEART</SourceID>
+      <RumorName>Dark Tunnel</RumorName>
+      <Text>A dark tunnel leading out of the central chamber.</Text>
+    </RumorFact>
+  </Entry>
+
+  <Entry>
+    <ID>RITUAL_RECORDS</ID>
+    <Name>Records Building</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <RumorFact>
+      <ID>RITUAL_RECORDS_TUNNEL</ID>
+      <SourceID>CRYSTAL_HEART</SourceID>
+      <RumorName>Dark Tunnel</RumorName>
+      <Text>A dark tunnel leading out of the central chamber.</Text>
+    </RumorFact>
+  </Entry>
+
+  <Entry>
+    <ID>RITUAL_CHAMBER</ID>
+    <Name>Ritual Chamber</Name>
+    <Curiosity>VISION_REALM</Curiosity>
+
+    <RumorFact>
+      <ID>RITUAL_CHAMBER_TUNNEL</ID>
+      <SourceID>CRYSTAL_HEART</SourceID>
+      <RumorName>Dark Tunnel</RumorName>
+      <Text>A dark tunnel leading out of the central chamber.</Text>
+    </RumorFact>
+  </Entry>
+</AstroObjectEntry>

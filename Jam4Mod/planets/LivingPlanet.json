@@ -69,7 +69,20 @@
         },
         "detectionRadius": 500,
         "identificationRadius": 20,
-        "sourceRadius": 20
+        "sourceRadius": 5
+      },
+      {
+        "name": "Red Crystal",
+        "frequency": "Electromagnetic Waves",
+        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "onlyAudibleToScope": true,
+        "parentPath": "Sector/LivingPlanet/Crystals/RedCrystal_Item/Signal",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0.25,
+          "z": 0
+        }
       }
     ]
   }

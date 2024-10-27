@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using OWML.Common;
 using OWML.ModHelper;
+using OWML.Utils;
 using System.Reflection;
 
 namespace Jam4Mod
@@ -9,6 +10,7 @@ namespace Jam4Mod
     {
         public static Jam4Mod Instance;
         public INewHorizons NewHorizons;
+        public ItemType CrystalItemType;
 
         public void Awake()
         {
@@ -26,6 +28,8 @@ namespace Jam4Mod
             // Get the New Horizons API and load configs
             NewHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
             NewHorizons.LoadConfigs(this);
+
+            CrystalItemType = EnumUtils.Create<ItemType>("Crystal");
 
             new Harmony("Etherpod.Jam4Mod").PatchAll(Assembly.GetExecutingAssembly());
 

@@ -1,26 +1,38 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Jam4Mod;
 
 public class Conductor : MonoBehaviour
 {
-  [SerializeField] private EndOfLoopController endOfLoopController = null;
-  [SerializeField] private OWTriggerVolume trigger = null;
+    [SerializeField] private EndOfLoopController endOfLoopController = null;
+    [SerializeField] private OWTriggerVolume trigger = null;
 
-  private void Awake()
-  {
-    trigger.OnEntry += TriggerEntered;
-  }
+    private bool startedSequence = false;
 
-  private void OnDestroy()
-  {
-    trigger.OnEntry -= TriggerEntered;
-  }
+    private void Awake()
+    {
+        trigger.OnEntry += TriggerEntered;
+    }
 
-  private void TriggerEntered(GameObject hitObj)
-  {
-    if (!hitObj.CompareTag("PlayerDetector")) return;
+    private void Update()
+    {
+        if (Keyboard.current.uKey.wasPressedThisFrame && !startedSequence)
+        {
+            endOfLoopController.StartEOLS();
+            startedSequence = true;
+        }
+    }
 
-    endOfLoopController.StartEOLS();
-  }
+    private void OnDestroy()
+    {
+        trigger.OnEntry -= TriggerEntered;
+    }
+
+    private void TriggerEntered(GameObject hitObj)
+    {
+        if (!hitObj.CompareTag("PlayerDetector")) return;
+
+        endOfLoopController.StartEOLS();
+    }
 }

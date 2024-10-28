@@ -22,22 +22,16 @@
     "playerSpawnPoints": [
       {
         "isDefault": true,
-        "offset": {
-          "x": 15,
-          "y": -295,
-          "z": 8
-        },
+        "isRelativeToParent": true,
+        "parentPath": "Sector/LivingPlanet/debug/player spawn",
         "startWithSuit": true
       }
     ],
     "shipSpawnPoints": [
       {
         "isDefault": true,
-        "offset": {
-          "x": 25,
-          "y": -300,
-          "z": 8
-        }
+        "isRelativeToParent": true,
+        "parentPath": "Sector/LivingPlanet/debug/ship spawn"
       }
     ]
   },

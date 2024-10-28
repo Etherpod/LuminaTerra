@@ -10,8 +10,9 @@
 
     <ExploreFact>
       <ID>LT_VISION_REALM_ENTER</ID>
-      <Text>I woke up in a void filled with stars after losing consciousness. A strange crystal and this system's Sun were also there.</Text>
+      <Text>I woke up in a void filled with stars after losing consciousness. A strange white crystal, a couple other glowing crystals, and this system's Sun were also there.</Text>
     </ExploreFact>
+    
     <ExploreFact>
       <ID>LT_VISION_REALM_DEATH</ID>
       <Text>The stars started to disappear until the Sun was the only remaining star. Shortly afterwards the Sun also died, leaving me in complete darkness.</Text>
@@ -25,7 +26,7 @@
 
     <ExploreFact>
       <ID>LT_STRANGE_HOUSE_ENTER</ID>
-      <Text>I found a lone house on the pole of the planet. Inside is a hole in the floor that leads to a dark tunnel.</Text>
+      <Text>A lone house on the pole of the planet. There is a hole in the floor that leads to a dark cave.</Text>
     </ExploreFact>
   </Entry>
 
@@ -43,7 +44,7 @@
 
     <ExploreFact>
       <ID>LT_CRYSTAL_HEART_FIND</ID>
-      <Text>I found a large chamber at the center of the planet. There was a large, white crystal floating in the center of the room emitting a signal on the Electromagnetic Waves frequency.</Text>
+      <Text>A strange, white crystal in a large chamber at the center of the planet. It emits a signal on the Electromagnetic Waves frequency.</Text>
     </ExploreFact>
 
     <Entry>
@@ -54,12 +55,11 @@
 
       <ExploreFact>
         <ID>LT_HEART_INTERFACE_FIND</ID>
-        <Text>A pillar of crystal emerged from the ground after I entered the room.</Text>
+        <Text>A pillar of crystal emerged from the ground after I entered the room. The Crystal Heart started transmitting some sort of data into the pillar.</Text>
       </ExploreFact>
       <ExploreFact>
         <ID>LT_HEART_INTERFACE_VISION</ID>
-        <Text>The Crystal Heart started transmitting information into the pillar. It showed me a vision of what looked like the past and the future.</Text>
-        <!--REGISTER SLIDES-->
+        <Text>When I walked into the stream of data, it showed me a vision of what looked like the past and the future.</Text>
       </ExploreFact>
     </Entry>
   </Entry>
@@ -73,21 +73,46 @@
       <ID>LT_CRYSTAL_WORKSHOP_TUNNEL</ID>
       <SourceID>LT_CRYSTAL_HEART</SourceID>
       <RumorName>Dark Tunnel</RumorName>
-      <Text>A dark tunnel leading out of the central chamber.</Text>
+      <Text>I saw a dark tunnel leading out of the central chamber marked by a cairn with a crystal.</Text>
     </RumorFact>
+
+    <ExploreFact>
+      <ID>LT_CRYSTAL_WORKSHOP_ENTER</ID>
+      <Text>An old building filled with machinery and crystals. There are a couple crystals that are cut and placed in containers.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_CRYSTAL_WORKSHOP_LANTERN</ID>
+      <Text>I found a lantern in the corner by some drawings. The drawings show someone lighting the lantern by pointing it at either a fire or the sun.</Text>
+    </ExploreFact>
   </Entry>
 
   <Entry>
     <ID>LT_CRYSTAL_ENERGIZER</ID>
-    <Name>Crystal Workshop</Name>
+    <Name>Strange Device</Name>
     <Curiosity>LT_RITUAL_CHAMBER</Curiosity>
 
     <RumorFact>
       <ID>LT_CRYSTAL_ENERGIZER_TUNNEL</ID>
       <SourceID>LT_CRYSTAL_HEART</SourceID>
       <RumorName>Dark Tunnel</RumorName>
-      <Text>A dark tunnel leading out of the central chamber.</Text>
+      <Text>I saw a dark tunnel leading out of the central chamber marked by a cairn with a circle of lines.</Text>
     </RumorFact>
+
+    <ExploreFact>
+      <ID>LT_CRYSTAL_ENERGIZER_ENTER</ID>
+      <Text>An old building with a strange table in the center.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_CRYSTAL_ENERGIZER_USAGE</ID>
+      <Text>I found some drawings on the wall showing someone placing a crystal on the table. The crystal then starts glowing.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_CRYSTAL_ENERGIZER_USED</ID>
+      <Text>When I placed an unlit crystal on the table, it began to glow.</Text>
+    </ExploreFact>
   </Entry>
 
   <Entry>
@@ -99,8 +124,23 @@
       <ID>LT_RITUAL_RECORDS_TUNNEL</ID>
       <SourceID>LT_CRYSTAL_HEART</SourceID>
       <RumorName>Dark Tunnel</RumorName>
-      <Text>A dark tunnel leading out of the central chamber.</Text>
+      <Text>I saw a dark tunnel leading out of the central chamber marked by a cairn with a book.</Text>
     </RumorFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_RECORDS_ENTER</ID>
+      <Text>An old building filled with papers and books.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_RECORDS_DOOR</ID>
+      <Text>There is a locked door at the back of the building. There is an empty socket near it that has a drawing of a glowing lantern.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_RECORDS_RITUAL</ID>
+      <Text>I found a strange diagram behind the locked door. It showed three glowing crystals- red, blue, and purple- in three different shapes surrounding a large circle.</Text>
+    </ExploreFact>
   </Entry>
 
   <Entry>
@@ -113,7 +153,17 @@
       <ID>LT_RITUAL_CHAMBER_TUNNEL</ID>
       <SourceID>LT_CRYSTAL_HEART</SourceID>
       <RumorName>Dark Tunnel</RumorName>
-      <Text>A dark tunnel leading out of the central chamber.</Text>
+      <Text>I saw a dark tunnel leading out of the central chamber marked by a cairn with three circles.</Text>
     </RumorFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_CHAMBER_ENTER</ID>
+      <Text>An old building with a large table at the center. The table has a large circle in the center surrounded by a 5-sided shape, a 6-sided shape, and a 7-sided shape.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_CHAMBER_USAGE</ID>
+      <Text>I found a drawing on the wall showing someone placing an item in the center of the table. The three shapes surrounding the center circle have labels that I can't read. The item that was placed in the center then appears to glow.</Text>
+    </ExploreFact>
   </Entry>
 </AstroObjectEntry>

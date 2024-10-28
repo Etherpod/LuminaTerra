@@ -44,8 +44,8 @@
   "Props": {
     "details": [
       {
-        "assetBundle": "planets/assets/jam4",
-        "path": "Assets/Jam4/LivingPlanet.prefab",
+        "assetBundle": "planets/assets/luminaterra",
+        "path": "Assets/LuminaTerra/LivingPlanet.prefab",
         "position": {
           "x": 0,
           "y": 0,

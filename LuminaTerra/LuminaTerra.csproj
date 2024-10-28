@@ -54,5 +54,5 @@
     </None>
   </ItemGroup>
   
-  <ProjectExtensions><VisualStudio><UserProperties planets_4livingplanet_1json__JsonSchema="" systems_4jam4system_1json__JsonSchema="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/star_system_schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties planets_4livingplanet_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

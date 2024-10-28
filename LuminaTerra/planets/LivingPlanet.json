@@ -1,14 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
   "name": "Living Planet",
-  "starSystem": "Jam4System",
+  "starSystem": "LT_System",
   "canShowOnTitle": false,
   "Base": {
     "surfaceSize": 350,
     "surfaceGravity": 11
   },
   "Orbit": {
-    "primaryBody": "Jam4Sun",
+    "primaryBody": "Sunset Star",
     "inclination": 27,
     "semiMajorAxis": 10000,
     "siderealPeriod": 10
@@ -124,5 +124,8 @@
         }
       }
     ]
+  },
+  "ShipLog": {
+    "xmlFile": "planets/shiplog/ShipLog.xml"
   }
 }

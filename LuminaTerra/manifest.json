@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/manifest_schema.json",
   "filename": "LuminaTerra.dll",
   "author": "Etherpod & ditzy",
-  "name": "LuminaTerra",
+  "name": "Lumina Terra",
   "uniqueName": "Etherpod.LuminaTerra",
   "version": "0.1.0",
   "owmlVersion": "2.13.0",

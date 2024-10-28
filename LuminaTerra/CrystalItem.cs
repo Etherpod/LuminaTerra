@@ -37,6 +37,8 @@ public class CrystalItem : OWItem
         }
         else
         {
+            _charged = true;
+            _fadeT = 1f;
             _signalParent.SetActive(true);
             SetEmissiveScale(1f);
         }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Jam4Mod;
+namespace LuminaTerra;
 
 public class CrystalDetector : MonoBehaviour
 {

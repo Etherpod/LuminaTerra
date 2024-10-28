@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Jam4Mod;
+namespace LuminaTerra;
 
 public class Conductor : MonoBehaviour
 {

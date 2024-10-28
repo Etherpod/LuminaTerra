@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Jam4Mod;
+namespace LuminaTerra;
 
 public class HeartSlidesInterface : MonoBehaviour
 {

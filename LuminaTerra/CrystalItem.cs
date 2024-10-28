@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Jam4Mod;
+namespace LuminaTerra;
 
 public class CrystalItem : OWItem
 {
@@ -24,7 +24,7 @@ public class CrystalItem : OWItem
 
     public override void Awake()
     {
-        ItemType = Jam4Mod.Instance.CrystalItemType;
+        ItemType = LuminaTerra.Instance.CrystalItemType;
         base.Awake();
     }
 

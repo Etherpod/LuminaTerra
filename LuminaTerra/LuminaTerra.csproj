@@ -11,10 +11,11 @@
     <DebugType>portable</DebugType>
     <Configurations>Debug;Release;ForUnity</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <RootNamespace>LuminaTerra</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Label="user configs">
-    <Content Include="Jam4Mod.csproj.user" />
+    <Content Include="LuminaTerra.csproj.user" />
   </ItemGroup>
   
   <Target Name="CopyDLLs" AfterTargets="Build" Condition=" '$(Configuration)' == 'ForUnity' And '$(UnityProjectDirectory)' != '' ">

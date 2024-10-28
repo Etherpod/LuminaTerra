@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/manifest_schema.json",
-  "filename": "Jam4Mod.dll",
+  "filename": "LuminaTerra.dll",
   "author": "Etherpod & ditzy",
-  "name": "Jam4Mod",
-  "uniqueName": "Etherpod.Jam4Mod",
+  "name": "LuminaTerra",
+  "uniqueName": "Etherpod.LuminaTerra",
   "version": "0.1.0",
   "owmlVersion": "2.13.0",
   "dependencies": ["xen.NewHorizons"]

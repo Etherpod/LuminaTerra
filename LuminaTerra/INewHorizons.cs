@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Jam4Mod
+namespace LuminaTerra
 {
     public interface INewHorizons
     {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Jam4Mod;
+namespace LuminaTerra;
 
 public class EndOfLoopController : MonoBehaviour
 {

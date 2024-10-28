@@ -4,11 +4,11 @@ using OWML.ModHelper;
 using OWML.Utils;
 using System.Reflection;
 
-namespace Jam4Mod
+namespace LuminaTerra
 {
-    public class Jam4Mod : ModBehaviour
+    public class LuminaTerra : ModBehaviour
     {
-        public static Jam4Mod Instance;
+        public static LuminaTerra Instance;
         public INewHorizons NewHorizons;
         public ItemType CrystalItemType;
 
@@ -23,7 +23,7 @@ namespace Jam4Mod
         public void Start()
         {
             // Starting here, you'll have access to OWML's mod helper.
-            ModHelper.Console.WriteLine($"My mod {nameof(Jam4Mod)} is loaded!", MessageType.Success);
+            ModHelper.Console.WriteLine($"My mod {nameof(LuminaTerra)} is loaded!", MessageType.Success);
 
             // Get the New Horizons API and load configs
             NewHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
@@ -31,7 +31,7 @@ namespace Jam4Mod
 
             CrystalItemType = EnumUtils.Create<ItemType>("Crystal");
 
-            new Harmony("Etherpod.Jam4Mod").PatchAll(Assembly.GetExecutingAssembly());
+            new Harmony("Etherpod.LuminaTerra").PatchAll(Assembly.GetExecutingAssembly());
 
             // Example of accessing game code.
             OnCompleteSceneLoad(OWScene.TitleScreen, OWScene.TitleScreen); // We start on title screen

@@ -12,6 +12,8 @@ public class CrystalItem : OWItem
     [SerializeField]
     private OWEmissiveRenderer[] _emissiveRenderers = null;
     [SerializeField]
+    private Light _light = null;
+    [SerializeField]
     private bool _startCharged = false;
 
     public static ItemType ItemType;
@@ -20,11 +22,13 @@ public class CrystalItem : OWItem
     private float _fadeLength = 1f;
     private float _fadeT;
     private bool _fading = false;
+    private float _baseLightIntensity;
     private List<CrystalDetector> _currentDetectors = [];
 
     public override void Awake()
     {
         ItemType = LuminaTerra.Instance.CrystalItemType;
+        _baseLightIntensity = _light.intensity;
         base.Awake();
     }
 
@@ -34,6 +38,7 @@ public class CrystalItem : OWItem
         {
             _signalParent.SetActive(false);
             SetEmissiveScale(0f);
+            _light.intensity = 0f;
         }
         else
         {
@@ -41,6 +46,7 @@ public class CrystalItem : OWItem
             _fadeT = 1f;
             _signalParent.SetActive(true);
             SetEmissiveScale(1f);
+            _light.intensity = _baseLightIntensity;
         }
     }
 
@@ -110,6 +116,7 @@ public class CrystalItem : OWItem
         {
             rend.SetEmissiveScale(scale);
         }
+        _light.intensity = Mathf.InverseLerp(0f, _baseLightIntensity, scale);
     }
 
     public override string GetDisplayName()

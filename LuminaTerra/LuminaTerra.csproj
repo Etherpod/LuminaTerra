@@ -24,7 +24,7 @@
   </Target>
   
   <ItemGroup Label="dependencies">
-    <PackageReference IncludeAssetsInclude="OWML" Version="2.13.0" IncludeAssets="compile" />
+    <PackageReference Include="OWML" Version="2.13.0" IncludeAssets="compile" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" IncludeAssets="compile" />
     <PackageReference Include="DitzyExtensions" Version="1.2.0" />
   </ItemGroup>

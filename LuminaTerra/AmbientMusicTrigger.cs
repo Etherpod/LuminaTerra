@@ -2,7 +2,7 @@
 
 public class AmbientMusicTrigger : MonoBehaviour
 {
-    [SerializeField] private float _fadeTime;
+    [SerializeField] private float _fadeTime = 5f;
 
     private OWTriggerVolume _trigger;
     private OWAudioSource _audio;

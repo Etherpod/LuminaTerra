@@ -24,11 +24,13 @@ public class CrystalItem : OWItem
     private bool _fading = false;
     private float _baseLightIntensity;
     private List<CrystalDetector> _currentDetectors = [];
+    private EOLSTransferable _eolsTransferable = null;
 
     public override void Awake()
     {
         ItemType = LuminaTerra.Instance.CrystalItemType;
         _baseLightIntensity = _light.intensity;
+        _eolsTransferable = gameObject.GetComponent<EOLSTransferable>();
         base.Awake();
     }
 
@@ -47,6 +49,7 @@ public class CrystalItem : OWItem
             _signalParent.SetActive(true);
             SetEmissiveScale(1f);
             _light.intensity = _baseLightIntensity;
+            _eolsTransferable?.SetEOLSActivation(true);
         }
     }
 
@@ -67,6 +70,7 @@ public class CrystalItem : OWItem
             else
             {
                 _signalParent.SetActive(_charged);
+                _eolsTransferable?.SetEOLSActivation(_charged);
                 _fading = false;
             }
         }
@@ -100,6 +104,7 @@ public class CrystalItem : OWItem
 
     public void SetCharged(bool newState, float fadeLength = 1f)
     {
+        if (_charged && !newState) _eolsTransferable.SetEOLSActivation(false);
         _charged = newState;
         _fadeLength = fadeLength;
         _fading = true;

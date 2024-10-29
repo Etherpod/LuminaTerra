@@ -27,7 +27,7 @@
   <ItemGroup Label="dependencies">
     <PackageReference Include="OWML" Version="2.13.0" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" />
-    <PackageReference Include="DitzyExtensions" Version="1.2.0" />
+<!--    <PackageReference Include="DitzyExtensions" Version="1.2.0" />-->
   </ItemGroup>
   
   <ItemGroup>

@@ -12,6 +12,7 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private Transform playerSpawn = null;
     [SerializeField] private MeshRenderer boundsRenderer = null;
     [SerializeField] private ParticleSystem stars = null;
+    [SerializeField] private OWAudioSource[] planetAmbience = null;
     [SerializeField] private OWAudioSource ambientSound = null;
     [SerializeField] private CylinderShape transferArea = null;
     [SerializeField] private Transform mainRitualTable = null;
@@ -76,6 +77,11 @@ public class EndOfLoopController : MonoBehaviour
         Locator.GetPlayerSuit().RemoveSuit(true);
         Locator.GetFlashlight().TurnOff();
         Locator.GetToolModeSwapper().UnequipTool();
+
+        foreach (OWAudioSource source in planetAmbience)
+        {
+            source.Stop();
+        }
 
         ambientSound.FadeIn(3, true);
         _sunAnimator.SetTrigger(TriggerDie);

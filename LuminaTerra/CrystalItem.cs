@@ -91,6 +91,11 @@ public class CrystalItem : OWItem
                 }
             }
         }
+
+        if (_charged)
+        {
+            _signalParent.SetActive(true);
+        }
     }
 
     public override void PickUpItem(Transform holdTranform)
@@ -99,6 +104,10 @@ public class CrystalItem : OWItem
         foreach (var detector in _currentDetectors)
         {
             detector.OnExit(this);
+        }
+        if (_charged)
+        {
+            _signalParent.SetActive(false);
         }
     }
 

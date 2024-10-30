@@ -68,7 +68,7 @@
       {
         "name": "Red Crystal",
         "frequency": "Electromagnetic Waves",
-        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "audio": "planets/audio/CrystalHum_Low.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector/LivingPlanet/Crystals/RedCrystal_Item/Signal",
         "isRelativeToParent": true,
@@ -81,7 +81,7 @@
       {
         "name": "Blue Crystal",
         "frequency": "Electromagnetic Waves",
-        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "audio": "planets/audio/CrystalHum_Mid.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector/LivingPlanet/Crystals/BlueCrystal_Item/Signal",
         "isRelativeToParent": true,
@@ -94,7 +94,7 @@
       {
         "name": "Green Crystal",
         "frequency": "Electromagnetic Waves",
-        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "audio": "planets/audio/CrystalHum_HighMid.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector/LivingPlanet/Crystals/GreenCrystal_Item/Signal",
         "isRelativeToParent": true,
@@ -107,7 +107,7 @@
       {
         "name": "Purple Crystal",
         "frequency": "Electromagnetic Waves",
-        "audio": "planets/audio/PlanetHeartbeat.mp3",
+        "audio": "planets/audio/CrystalHum_High.mp3",
         "onlyAudibleToScope": true,
         "parentPath": "Sector/LivingPlanet/Crystals/PurpleCrystal_Item/Signal",
         "isRelativeToParent": true,

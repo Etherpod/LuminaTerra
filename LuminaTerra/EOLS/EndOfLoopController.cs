@@ -14,6 +14,7 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private ParticleSystem stars = null;
     [SerializeField] private OWAudioSource[] planetAmbience = null;
     [SerializeField] private OWAudioSource ambientSound = null;
+    [SerializeField] private OWAudioSource windAudio = null;
     [SerializeField] private CylinderShape transferArea = null;
     [SerializeField] private Transform mainRitualTable = null;
     [SerializeField] private Material sunMaterial = null;
@@ -47,6 +48,20 @@ public class EndOfLoopController : MonoBehaviour
     private void Update()
     {
         sunMaterial.SetFloat(PropColorTime, sunDeathProgress);
+
+        float num = Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time);
+        _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, num);
+        _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, num);
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = Mathf.Lerp(0f, 0.6f, num);
+
+        if (num >= 1)
+        {
+            EndEOLS();
+        }
+        else if (!windAudio.isPlaying && num > 0)
+        {
+            windAudio.FadeIn(15f, true);
+        }
     }
 
     public void StartEOLS()
@@ -86,15 +101,17 @@ public class EndOfLoopController : MonoBehaviour
         ambientSound.FadeIn(3, true);
         _sunAnimator.SetTrigger(TriggerDie);
 
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignetteEnabled = true;
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.color = Color.black;
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = 0f;
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.opacity = 1f;
+        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.smoothness = 1f;
         _playerCameraEffectController.OpenEyes(0.3f);
-
-        StartCoroutine(EndEOLS());
     }
 
-    private IEnumerator EndEOLS()
+    private void EndEOLS()
     {
-        yield return new WaitUntil(() => ambientSound.isPlaying == false);
-
-        Locator.GetDeathManager().KillPlayer(DeathType.Default);
+        Locator.GetDeathManager().KillPlayer(DeathType.TimeLoop);
+        enabled = false;
     }
 }

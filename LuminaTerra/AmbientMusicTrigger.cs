@@ -1,5 +1,7 @@
 using UnityEngine;
 
+namespace LuminaTerra;
+
 public class AmbientMusicTrigger : MonoBehaviour
 {
     [SerializeField] private float _fadeTime = 5f;

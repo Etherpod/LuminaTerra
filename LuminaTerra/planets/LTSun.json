@@ -1,17 +1,17 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
   "starSystem": "LT_System",
-  "name": "Sunset Star",
+  "name": "Enduring Flame",
   "canShowOnTitle": false,
   "Base": {
     "gravityFallOff": "inverseSquared",
-    "surfaceSize": 1200,
-    "surfaceGravity": 35,
+    "surfaceSize": 800,
+    "surfaceGravity": 25,
     "centerOfSolarSystem": true
   },
   "Star": {
-    "size": 1200,
-    "solarLuminosity": 0.6,
+    "size": 800,
+    "solarLuminosity": 0.4,
     "tint": {
       "r": 186,
       "g": 38,
@@ -19,8 +19,8 @@
     },
     "lightTint": {
       "r": 255,
-      "g": 99,
-      "b": 68
+      "g": 189,
+      "b": 175
     }
   }
 }

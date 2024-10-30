@@ -8,7 +8,7 @@
     "surfaceGravity": 11
   },
   "Orbit": {
-    "primaryBody": "Sunset Star",
+    "primaryBody": "Enduring Flame",
     "inclination": 27,
     "semiMajorAxis": 10000,
     "siderealPeriod": 10
@@ -21,17 +21,37 @@
   "Spawn": {
     "playerSpawnPoints": [
       {
-        "isDefault": true,
-        "isRelativeToParent": true,
-        "parentPath": "Sector/LivingPlanet/debug/player spawn",
-        "startWithSuit": true
+        "alignRadial": false,
+        "position": {
+          "x": 300,
+          "y": 262,
+          "z": 1506
+        },
+        "rotation": {
+          "x": 6,
+          "y": 198,
+          "z": 245
+        },
+        "offset": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
       }
     ],
     "shipSpawnPoints": [
       {
-        "isDefault": true,
-        "isRelativeToParent": true,
-        "parentPath": "Sector/LivingPlanet/debug/ship spawn"
+        "alignRadial": false,
+        "position": {
+          "x": 300,
+          "y": 262,
+          "z": 1506
+        },
+        "rotation": {
+          "x": 6,
+          "y": 198,
+          "z": 245
+        }
       }
     ]
   },

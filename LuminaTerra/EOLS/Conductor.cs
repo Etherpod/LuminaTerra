@@ -29,10 +29,16 @@ public class Conductor : MonoBehaviour
             StartCoroutine(StartEOLS());
             startedSequence = true;
         }
+        else if (!startedSequence && Time.timeSinceLevelLoad > 100f - 32f)
+        {
+            StartCoroutine(StartEOLS());
+            startedSequence = true;
+        }
     }
 
     private IEnumerator StartEOLS()
     {
+        Locator.GetAudioMixer().MixEndTimes(5f);
         musicSource.Play();
         
         yield return new WaitUntil(() => musicSource.time >= 29f);
@@ -40,7 +46,7 @@ public class Conductor : MonoBehaviour
         FindObjectOfType<PlayerCameraEffectController>().CloseEyes(3f);
 
         yield return new WaitUntil(() => musicSource.time >= 32f);
-        
+
         endOfLoopController.StartEOLS();
     }
 

@@ -10,7 +10,7 @@ public class CrystalEnergizer : MonoBehaviour
     [SerializeField]
     private OWAudioSource _energizerAudio = null;
     [SerializeField]
-    private OWAudioSource[] _crystalAudioSources;
+    private OWAudioSource[] _crystalAudioSources = null;
 
     private Dictionary<CrystalItem, OWAudioSource> _connectedCrystalAudioSources = [];
 

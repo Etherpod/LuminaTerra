@@ -54,13 +54,13 @@ public class EndOfLoopController : MonoBehaviour
         _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, num);
         _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = Mathf.Lerp(0f, 0.6f, num);
 
-        if (num >= 1)
+        if (num >= 0.99)
         {
             EndEOLS();
         }
         else if (!windAudio.isPlaying && num > 0)
         {
-            windAudio.FadeIn(15f, true);
+            windAudio.FadeIn(15f, true, true);
         }
     }
 
@@ -85,6 +85,7 @@ public class EndOfLoopController : MonoBehaviour
         stars.Play();
 
         var player = Locator.GetPlayerBody();
+
         player.SetPosition(playerSpawn.position);
         player.SetRotation(playerSpawn.rotation);
         player.SetVelocity(gameObject.GetAttachedOWRigidbody().GetVelocity());

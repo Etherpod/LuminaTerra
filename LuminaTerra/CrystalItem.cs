@@ -71,6 +71,7 @@ public class CrystalItem : OWItem
             {
                 _signalParent.SetActive(_charged);
                 _eolsTransferable?.SetEOLSActivation(_charged);
+                Locator.GetShipLogManager().RevealFact("LT_CRYSTAL_ENERGIZER_USED");
                 _fading = false;
             }
         }

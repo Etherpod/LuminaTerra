@@ -1,24 +1,6 @@
 ﻿<AstroObjectEntry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/shiplog_schema.xsd">
   <ID>Living Planet</ID>
-
-  <Entry>
-    <ID>LT_VISION_REALM</ID>
-    <Name>Vision Realm</Name>
-    <Curiosity>LT_RITUAL_CHAMBER</Curiosity>
-    <IgnoreMoreToExplore/>
-
-    <ExploreFact>
-      <ID>LT_VISION_REALM_ENTER</ID>
-      <Text>I woke up in a void filled with stars after losing consciousness. A strange white crystal, a couple other glowing crystals, and this system's Sun were also there.</Text>
-    </ExploreFact>
-    
-    <ExploreFact>
-      <ID>LT_VISION_REALM_DEATH</ID>
-      <Text>The stars started to disappear until the Sun was the only remaining star. Shortly afterwards the Sun also died, leaving me in complete darkness.</Text>
-    </ExploreFact>
-  </Entry>
-
   <Entry>
     <ID>LT_STRANGE_HOUSE</ID>
     <Name>Strange House</Name>
@@ -63,6 +45,23 @@
       </ExploreFact>
     </Entry>
   </Entry>
+  
+  <Entry>
+    <ID>LT_VISION_REALM</ID>
+    <Name>Vision Realm</Name>
+    <Curiosity>LT_RITUAL_CHAMBER</Curiosity>
+    <IgnoreMoreToExplore/>
+
+    <ExploreFact>
+      <ID>LT_VISION_REALM_ENTER</ID>
+      <Text>I woke up in a void filled with stars after losing consciousness. A strange white crystal and this system's sun were also there.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_VISION_REALM_DEATH</ID>
+      <Text>The stars started to disappear until the Sun was the only remaining star. Shortly afterwards the Sun also died, leaving me in complete darkness.</Text>
+    </ExploreFact>
+  </Entry>
 
   <Entry>
     <ID>LT_CRYSTAL_WORKSHOP</ID>
@@ -78,12 +77,12 @@
 
     <ExploreFact>
       <ID>LT_CRYSTAL_WORKSHOP_ENTER</ID>
-      <Text>An old building filled with machinery and crystals. There are a couple crystals that are cut and placed in containers.</Text>
+      <Text>An old building that looks like it was used for refining crystals. There is a green crystal and a blue crystal on a pallet in the corner.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_CRYSTAL_WORKSHOP_LANTERN</ID>
-      <Text>I found a lantern in the corner by some drawings. The drawings show someone lighting the lantern by pointing it at either a fire or the sun.</Text>
+      <Text>I found a lantern next to some drawings. The drawings show a lit candle being blown out by the wind, then a lit lantern resisting the wind.</Text>
     </ExploreFact>
   </Entry>
 
@@ -101,17 +100,17 @@
 
     <ExploreFact>
       <ID>LT_CRYSTAL_ENERGIZER_ENTER</ID>
-      <Text>An old building with a strange table in the center.</Text>
+      <Text>A worn down building with a strange pedestal on the second floor.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_CRYSTAL_ENERGIZER_USAGE</ID>
-      <Text>I found some drawings on the wall showing someone placing a crystal on the table. The crystal then starts glowing.</Text>
+      <Text>I found a drawing next to the pedestal that shows a glowing crystal communicating with the Crystal Heart.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_CRYSTAL_ENERGIZER_USED</ID>
-      <Text>When I placed an unlit crystal on the table, it began to glow.</Text>
+      <Text>When I placed an unlit crystal on the table, it began to glow and started emitting a signal on the Electromagnetic Waves frequency.</Text>
     </ExploreFact>
   </Entry>
 
@@ -129,17 +128,17 @@
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_ENTER</ID>
-      <Text>An old building filled with papers and books.</Text>
+      <Text>An old building filled with writing tablets.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_DOOR</ID>
-      <Text>There is a locked door at the back of the building. There is an empty socket near it that has a drawing of a glowing lantern.</Text>
+      <Text>There is a locked door at the back of the building at the bottom of a staircase. A tablet at the top of the staircase shows a drawing of a lit lantern.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_RITUAL</ID>
-      <Text>I found a strange diagram behind the locked door. It showed three glowing crystals- red, blue, and purple- in three different shapes surrounding a large circle.</Text>
+      <Text>I found a strange diagram behind the locked door. It showed three glowing crystals- red, blue, and purple- centered in three different shapes.</Text>
     </ExploreFact>
   </Entry>
 
@@ -158,12 +157,12 @@
 
     <ExploreFact>
       <ID>LT_RITUAL_CHAMBER_ENTER</ID>
-      <Text>An old building with a large table at the center. The table has a large circle in the center surrounded by a 5-sided shape, a 6-sided shape, and a 7-sided shape.</Text>
+      <Text>A relatively intact building with a large table at the center. The table has a large circle in the center surrounded by 3 different shapes.</Text>
     </ExploreFact>
 
     <ExploreFact>
-      <ID>LT_RITUAL_CHAMBER_USAGE</ID>
-      <Text>I found a drawing on the wall showing someone placing an item in the center of the table. The three shapes surrounding the center circle have labels that I can't read. The item that was placed in the center then appears to glow.</Text>
+      <ID>LT_RITUAL_CHAMBER_TABLE</ID>
+      <Text>I found a drawing on a wall next to the large table. It shows the layout of the table with 4 labeled areas: the large circle at the center, a pentagon, a hexagon, and a septagon.</Text>
     </ExploreFact>
   </Entry>
 </AstroObjectEntry>

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace LuminaTerra;
 
@@ -6,6 +7,12 @@ public class CrystalEnergizer : MonoBehaviour
 {
     [SerializeField]
     private CrystalDetector _detector = null;
+    [SerializeField]
+    private OWAudioSource _energizerAudio = null;
+    [SerializeField]
+    private OWAudioSource[] _crystalAudioSources;
+
+    private Dictionary<CrystalItem, OWAudioSource> _connectedCrystalAudioSources = [];
 
     private void Start()
     {
@@ -19,6 +26,22 @@ public class CrystalEnergizer : MonoBehaviour
         {
             crystal.SetCharged(true, 3f);
         }
+
+        if (_detector.GetNumCrystals() == 1)
+        {
+            _energizerAudio.FadeIn(1f, false, true);
+        }
+
+        foreach (OWAudioSource source in _crystalAudioSources)
+        {
+            if (!_connectedCrystalAudioSources.ContainsValue(source))
+            {
+                _connectedCrystalAudioSources.Add(crystal, source);
+                source.clip = crystal.GetSignal();
+                source.FadeIn(2f);
+                break;
+            }
+        }
     }
 
     private void OnCrystalExit(CrystalItem crystal)
@@ -26,6 +49,17 @@ public class CrystalEnergizer : MonoBehaviour
         if (!crystal.IsLit())
         {
             crystal.SetCharged(false, 1f);
+        }
+
+        if (_detector.GetNumCrystals() == 0)
+        {
+            _energizerAudio.FadeOut(1f);
+        }
+
+        if (_connectedCrystalAudioSources.ContainsKey(crystal))
+        {
+            _connectedCrystalAudioSources[crystal].FadeOut(2f);
+            _connectedCrystalAudioSources.Remove(crystal);
         }
     }
 

@@ -124,6 +124,11 @@ public class CrystalItem : OWItem
         return _charged && _fadeT >= 1f;
     }
 
+    public AudioClip GetSignal()
+    {
+        return _signalParent.GetComponentInChildren<OWAudioSource>().clip;
+    }
+
     private void SetEmissiveScale(float scale)
     {
         foreach (var rend in _emissiveRenderers)

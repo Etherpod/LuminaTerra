@@ -18,7 +18,7 @@ public class CrystalDetector : MonoBehaviour
 
     public void OnExit(CrystalItem crystal)
     {
-        _numCrystals = Mathf.Min(_numCrystals - 1, 0);
+        _numCrystals = Mathf.Max(_numCrystals - 1, 0);
         OnCrystalExit?.Invoke(crystal);
     }
 

@@ -1,60 +1,106 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DitzyExtensions.Collection;
 using UnityEngine;
+using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
 
 public class LAMP : OWItem
 {
+    private static readonly int AnimStateOpened = Animator.StringToHash("opened");
     private static readonly int AnimStateClosed = Animator.StringToHash("closed");
-    private static readonly int AnimTriggerOpen = Animator.StringToHash("open");
-    private static readonly float FadeDuration = 2;
+    private static readonly int AnimBoolOpen = Animator.StringToHash("open");
+    private static readonly float LightsFadeDurationSeconds = 1;
+    private static readonly float LAMPFadeDurationSeconds = 2;
 
     public static ItemType LAMPType = (ItemType)(10 << 1);
 
-    private OWTriggerVolume _triggerVolume;
     private Animator _animator;
+    private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
+
+    private IList<CapturableLight> _capturedLights = new List<CapturableLight>(8);
 
     public override string GetDisplayName() => "Lantern";
 
+    // public bool IsOpen => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateOpened;
+
     public override void Awake()
     {
-        _triggerVolume = GetComponent<OWTriggerVolume>();
         _animator = GetComponent<Animator>();
-        _lightController = gameObject.GetAddComponent<CapturableLight>();
+        _triggerVolume = GetComponentInChildren<OWTriggerVolume>();
+        _lightController = GetComponent<CapturableLight>();
         _type = LAMPType;
-        
+
+        _lightController.OnScaleChangeComplete += LAMPScaleChangeComplete;
+
         base.Awake();
     }
 
-    private void Update()
+    public override void OnDestroy()
+    {
+        _lightController.OnScaleChangeComplete -= LAMPScaleChangeComplete;
+        
+        base.OnDestroy();
+    }
+
+    private void LAMPScaleChangeComplete()
+    {
+        if (_animator.GetBool(AnimBoolOpen)) CloseLamp();
+    }
+
+    private void FixedUpdate()
     {
         if (!Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Item)) return;
-        if (!OWInput.IsPressed(InputLibrary.toolActionPrimary, InputMode.Character)) return;
+        if (!OWInput.IsNewlyPressed(InputLibrary.toolActionSecondary, InputMode.Character)) return;
 
-        print("LAMP");
-        var animState = _animator.GetCurrentAnimatorStateInfo(0);
-        if (animState.shortNameHash != AnimStateClosed) return;
-        
-        _animator.SetTrigger(AnimTriggerOpen);
+        OpenLamp();
+    }
 
-        var consumedALight = _triggerVolume
-            .getTrackedObjects()
-            .Select(obj =>
-            {
-                var capturableLight = obj.GetComponent<CapturableLight>();
-                if (!capturableLight) return false;
+    private void CloseLamp()
+    {
+        LTPrint("close");
+        _animator.SetBool(AnimBoolOpen, false);
+    }
 
-                capturableLight.SetScale(0, FadeDuration);
-                return true;
-            })
-            .AsList()
-            .Any(foundLight => foundLight);
-        if (consumedALight)
+    private void OpenLamp()
+    {
+        _animator.SetBool(AnimBoolOpen, true);
+
+        if (_capturedLights.IsEmpty())
         {
-            _lightController.SetScale(1, FadeDuration);
+            CaptureLights();
         }
+        else
+        {
+            ReleaseLights();
+        }
+    }
+
+    private void CaptureLights()
+    {
+        LTPrint("capture");
+        var detectedLights = _triggerVolume
+            .getTrackedObjects()
+            .Select(obj => obj.GetComponent<CapturableLight>())
+            .Where(light => light)
+            .AsList();
+
+        if (detectedLights.IsNotEmpty())
+        {
+            detectedLights
+                .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))
+                .ForEach(light => _capturedLights.Add(light));
+            _lightController.SetScale(1, LAMPFadeDurationSeconds);
+        }
+    }
+
+    private void ReleaseLights()
+    {
+        LTPrint("release");
+        _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
+        _capturedLights.Clear();
+        _lightController.SetScale(0, LAMPFadeDurationSeconds);
     }
 }

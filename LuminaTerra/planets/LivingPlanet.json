@@ -21,37 +21,42 @@
   "Spawn": {
     "playerSpawnPoints": [
       {
-        "alignRadial": false,
-        "position": {
-          "x": 300,
-          "y": 262,
-          "z": 1506
-        },
-        "rotation": {
-          "x": 6,
-          "y": 198,
-          "z": 245
-        },
-        "offset": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        }
+        "startWithSuit": true,
+        "isRelativeToParent": true,
+        "parentPath": "Sector/LivingPlanet/debug/player spawn"
+//        "alignRadial": false,
+//        "position": {
+//          "x": 300,
+//          "y": 262,
+//          "z": 1506
+//        },
+//        "rotation": {
+//          "x": 6,
+//          "y": 198,
+//          "z": 245
+//        },
+//        "offset": {
+//          "x": 0,
+//          "y": 0,
+//          "z": 0
+//        }
       }
     ],
     "shipSpawnPoints": [
       {
-        "alignRadial": false,
-        "position": {
-          "x": 300,
-          "y": 262,
-          "z": 1506
-        },
-        "rotation": {
-          "x": 6,
-          "y": 198,
-          "z": 245
-        }
+        "isRelativeToParent": true,
+        "parentPath": "Sector/LivingPlanet/debug/ship spawn"
+//        "alignRadial": false,
+//        "position": {
+//          "x": 300,
+//          "y": 262,
+//          "z": 1506
+//        },
+//        "rotation": {
+//          "x": 6,
+//          "y": 198,
+//          "z": 245
+//        }
       }
     ]
   },

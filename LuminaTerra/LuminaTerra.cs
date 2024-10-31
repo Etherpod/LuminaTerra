@@ -44,5 +44,4 @@ namespace LuminaTerra
             ModHelper.Console.WriteLine("Loaded into solar system!", MessageType.Success);
         }
     }
-
 }

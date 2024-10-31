@@ -17,7 +17,7 @@ public class Fader
         _fadeTargetValue = targetValue;
     }
 
-    public bool IsFading() => _fadeEndTime < Time.time;
+    public bool IsFading() => Time.time < _fadeEndTime;
 
     public float GetValue()
     {

@@ -17,11 +17,14 @@ public class Fader
         _fadeTargetValue = targetValue;
     }
 
-    public bool IsFading() => Time.time < _fadeEndTime;
+    public bool IsFading => Time.time < _fadeEndTime;
 
-    public float GetValue()
+    public float Value
     {
-        var t = Mathf.InverseLerp(_fadeStartTime, _fadeEndTime, Time.time);
-        return Mathf.Lerp(_fadeStartValue, _fadeTargetValue, t);
+        get
+        {
+            var t = Mathf.InverseLerp(_fadeStartTime, _fadeEndTime, Time.time);
+            return Mathf.Lerp(_fadeStartValue, _fadeTargetValue, t);
+        }
     }
 }

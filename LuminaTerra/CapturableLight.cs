@@ -43,10 +43,10 @@ public class CapturableLight : MonoBehaviour
 
     private void Update()
     {
-        _scale = _fader.GetValue();
+        _scale = _fader.Value;
         UpdateScale();
         
-        if (!_fader.IsFading())
+        if (!_fader.IsFading)
         {
             enabled = false;
             OnScaleChangeComplete?.Invoke();

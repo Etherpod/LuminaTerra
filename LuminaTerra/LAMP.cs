@@ -16,16 +16,20 @@ public class LAMP : OWItem
 
     public static ItemType LAMPType = (ItemType)(10 << 1);
 
-    [SerializeField] private OWAudioSource audioSource = null;
-    [SerializeField] private AudioClip openClip = null;
-    [SerializeField] private AudioClip closeClip = null;
+    [SerializeField] private OWAudioSource doorAudioSource = null;
+    [SerializeField] private OWAudioSource siphonAudioSource = null;
+    [SerializeField] private AudioClip doorOpenClip = null;
+    [SerializeField] private AudioClip doorCloseClip = null;
+    [SerializeField] private AudioClip siphonCaptureClip = null;
+    [SerializeField] private AudioClip siphonReleaseClip = null;
 
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
-    private List<ItemDetector> _currentDetectors = [];
 
     private IList<CapturableLight> _capturedLights = new List<CapturableLight>(8);
+    private List<ItemDetector> _currentDetectors = [];
+    private bool _close = false;
 
     public override string GetDisplayName() => "Lantern";
 
@@ -46,7 +50,7 @@ public class LAMP : OWItem
     public override void OnDestroy()
     {
         _lightController.OnScaleChangeComplete -= LAMPScaleChangeComplete;
-        
+
         base.OnDestroy();
     }
 
@@ -55,10 +59,36 @@ public class LAMP : OWItem
         if (_animator.GetBool(AnimBoolOpen)) CloseLamp();
     }
 
+    public void PlayDoorOpenSFX() => doorAudioSource.PlayOneShot(doorOpenClip);
+
+    public void PlayDoorCloseSFX() => doorAudioSource.PlayOneShot(doorCloseClip);
+
+    public void PlaySiphonCaptureSFX()
+    {
+        siphonAudioSource.Stop();
+        siphonAudioSource.clip = siphonCaptureClip;
+        siphonAudioSource.FadeIn(0.5f, true);
+    }
+
+    public void PlaySiphonReleaseSFX()
+    {
+        siphonAudioSource.Stop();
+        siphonAudioSource.clip = siphonReleaseClip;
+        siphonAudioSource.FadeIn(0.5f, true);
+    }
+
     private void FixedUpdate()
     {
+        if (_close)
+        {
+            CloseLamp();
+            _close = false;
+        }
+
         if (!Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Item)) return;
         if (!OWInput.IsNewlyPressed(InputLibrary.toolActionSecondary, InputMode.Character)) return;
+        var animatorState = _animator.GetCurrentAnimatorStateInfo(0);
+        if (animatorState.shortNameHash != AnimStateClosed && animatorState.shortNameHash != AnimStateOpened) return;
 
         OpenLamp();
     }
@@ -67,13 +97,15 @@ public class LAMP : OWItem
     {
         // LTPrint("close");
         _animator.SetBool(AnimBoolOpen, false);
-        audioSource.PlayOneShot(closeClip);
+        if (siphonAudioSource.isPlaying && !siphonAudioSource.IsFadingOut())
+        {
+            siphonAudioSource.FadeOut(1);
+        }
     }
 
     private void OpenLamp()
     {
         _animator.SetBool(AnimBoolOpen, true);
-        audioSource.PlayOneShot(openClip);
 
         if (_capturedLights.IsEmpty())
         {
@@ -94,24 +126,35 @@ public class LAMP : OWItem
             .Where(light => light)
             .AsList();
 
-        if (detectedLights.IsNotEmpty())
+        if (detectedLights.IsEmpty())
         {
-            detectedLights
-                .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))
-                .ForEach(light => _capturedLights.Add(light));
-            _lightController.SetScale(1, LAMPFadeDurationSeconds);
+            _close = true;
+            return;
         }
+        
+        PlaySiphonCaptureSFX();
+
+        detectedLights
+            .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))
+            .ForEach(light => _capturedLights.Add(light));
+        _lightController.SetScale(1, LAMPFadeDurationSeconds);
     }
 
     private void ReleaseLights()
     {
         // LTPrint("release");
+        PlaySiphonReleaseSFX();
         _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, LAMPFadeDurationSeconds);
     }
 
-    public override void DropItem(Vector3 position, Vector3 normal, Transform parent, Sector sector, IItemDropTarget customDropTarget)
+    public override void DropItem(
+        Vector3 position,
+        Vector3 normal,
+        Transform parent,
+        Sector sector,
+        IItemDropTarget customDropTarget)
     {
         base.DropItem(position, normal, parent, sector, customDropTarget);
         Collider[] results = Physics.OverlapSphere(transform.position + transform.up * 0.15f, 0.2f);
@@ -132,11 +175,12 @@ public class LAMP : OWItem
     public override void PickUpItem(Transform holdTranform)
     {
         base.PickUpItem(holdTranform);
-        
+
         foreach (ItemDetector detector in _currentDetectors)
         {
             detector.OnExit(this);
         }
+
         _currentDetectors.Clear();
     }
 }

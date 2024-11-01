@@ -81,6 +81,11 @@
     </ExploreFact>
 
     <ExploreFact>
+      <ID>LT_CRYSTAL_WORKSHOP_SYMBOLS</ID>
+      <Text>I found four colored symbols on the wall: a red group of three lines, a blue circle with three dots in it, a green square with a line through it, and a purple Y-shaped symbol.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
       <ID>LT_CRYSTAL_WORKSHOP_LANTERN</ID>
       <Text>I found a lantern next to some drawings. The drawings show a lit candle being blown out by the wind, then a lit lantern resisting the wind.</Text>
     </ExploreFact>
@@ -138,7 +143,7 @@
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_RITUAL</ID>
-      <Text>I found a strange diagram behind the locked door. It showed three glowing crystals- red, blue, and purple- centered in three different shapes.</Text>
+      <Text>I found a strange diagram behind the locked door. It showed three symbols in three shapes: a series of lines in a pentagon, a circle with three dots in a hexagon, and a strange Y-shaped symbol in a septagon.</Text>
     </ExploreFact>
   </Entry>
 
@@ -157,7 +162,7 @@
 
     <ExploreFact>
       <ID>LT_RITUAL_CHAMBER_ENTER</ID>
-      <Text>A relatively intact building with a large table at the center. The table has a large circle in the center surrounded by 3 different shapes.</Text>
+      <Text>A relatively intact building with a large table at the center. The table has a circle in the center surrounded by 3 different shapes.</Text>
     </ExploreFact>
 
     <ExploreFact>

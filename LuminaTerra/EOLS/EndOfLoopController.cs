@@ -30,7 +30,7 @@ public class EndOfLoopController : MonoBehaviour
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
         _sunAnimator = gameObject.GetComponent<Animator>();
         LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
-        
+
         boundsRenderer.enabled = false;
         var transferAreaRenderer = transferArea.GetComponent<MeshRenderer>();
         if (transferAreaRenderer) transferAreaRenderer.enabled = false;
@@ -44,6 +44,9 @@ public class EndOfLoopController : MonoBehaviour
     private void Start()
     {
         _sun = GameObject.Find("Jam4Sun_Body/Sector/Star");
+        SunOverrideVolume vol = GetComponentInChildren<SunOverrideVolume>();
+        vol._sector = GetComponentInParent<Sector>();
+        vol._sector.OnSectorOccupantsUpdated += vol.OnSectorOccupantsUpdated;
     }
 
     private void OnPlanetLoad(string name)
@@ -81,8 +84,7 @@ public class EndOfLoopController : MonoBehaviour
 
         foreach (var transferable in FindObjectsOfType<EOLSTransferable>())
         {
-            print($"{transferable.name} - {transferable.IsActivated}");
-            // if (!transferable.IsActivated) continue;
+             if (!transferable.IsActivated) continue;
             var objTransform = transferable.transform;
             var objRelativePos = _conductor.GetMainRitualTable().InverseTransformVector(objTransform.position - _conductor.GetMainRitualTable().position);
             var objLocalPos = new Vector3(objRelativePos.x, 0, objRelativePos.z);

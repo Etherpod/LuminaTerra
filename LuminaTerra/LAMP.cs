@@ -19,6 +19,7 @@ public class LAMP : OWItem
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
+    private List<ItemDetector> _currentDetectors = [];
 
     private IList<CapturableLight> _capturedLights = new List<CapturableLight>(8);
 
@@ -102,5 +103,34 @@ public class LAMP : OWItem
         _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, LAMPFadeDurationSeconds);
+    }
+
+    public override void DropItem(Vector3 position, Vector3 normal, Transform parent, Sector sector, IItemDropTarget customDropTarget)
+    {
+        base.DropItem(position, normal, parent, sector, customDropTarget);
+        Collider[] results = Physics.OverlapSphere(transform.position + transform.up * 0.15f, 0.2f);
+        if (results.Length > 0)
+        {
+            foreach (var col in results)
+            {
+                LTPrint(col.gameObject.name);
+                if (col.gameObject.TryGetComponent(out ItemDetector detector))
+                {
+                    _currentDetectors.Add(detector);
+                    detector.OnEntry(this);
+                }
+            }
+        }
+    }
+
+    public override void PickUpItem(Transform holdTranform)
+    {
+        base.PickUpItem(holdTranform);
+        
+        foreach (ItemDetector detector in _currentDetectors)
+        {
+            detector.OnExit(this);
+        }
+        _currentDetectors.Clear();
     }
 }

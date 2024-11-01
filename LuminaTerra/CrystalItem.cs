@@ -106,6 +106,7 @@ public class CrystalItem : OWItem
         {
             detector.OnExit(this);
         }
+        _currentDetectors.Clear();
         if (_charged)
         {
             _signalParent.SetActive(false);
@@ -128,6 +129,11 @@ public class CrystalItem : OWItem
     public AudioClip GetSignal()
     {
         return _signalParent.GetComponentInChildren<OWAudioSource>().clip;
+    }
+
+    public string GetPrefix()
+    {
+        return _namePrefix;
     }
 
     private void SetEmissiveScale(float scale)

@@ -16,6 +16,10 @@ public class LAMP : OWItem
 
     public static ItemType LAMPType = (ItemType)(10 << 1);
 
+    [SerializeField] private OWAudioSource audioSource = null;
+    [SerializeField] private AudioClip openClip = null;
+    [SerializeField] private AudioClip closeClip = null;
+
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
@@ -61,13 +65,15 @@ public class LAMP : OWItem
 
     private void CloseLamp()
     {
-        LTPrint("close");
+        // LTPrint("close");
         _animator.SetBool(AnimBoolOpen, false);
+        audioSource.PlayOneShot(closeClip);
     }
 
     private void OpenLamp()
     {
         _animator.SetBool(AnimBoolOpen, true);
+        audioSource.PlayOneShot(openClip);
 
         if (_capturedLights.IsEmpty())
         {
@@ -81,7 +87,7 @@ public class LAMP : OWItem
 
     private void CaptureLights()
     {
-        LTPrint("capture");
+        // LTPrint("capture");
         var detectedLights = _triggerVolume
             .getTrackedObjects()
             .Select(obj => obj.GetComponent<CapturableLight>())
@@ -99,7 +105,7 @@ public class LAMP : OWItem
 
     private void ReleaseLights()
     {
-        LTPrint("release");
+        // LTPrint("release");
         _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, LAMPFadeDurationSeconds);

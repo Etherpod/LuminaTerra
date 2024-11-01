@@ -12,11 +12,9 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private Transform playerSpawn = null;
     [SerializeField] private MeshRenderer boundsRenderer = null;
     [SerializeField] private ParticleSystem stars = null;
-    [SerializeField] private OWAudioSource[] planetAmbience = null;
     [SerializeField] private OWAudioSource ambientSound = null;
     [SerializeField] private OWAudioSource windAudio = null;
     [SerializeField] private CylinderShape transferArea = null;
-    [SerializeField] private Transform mainRitualTable = null;
     [SerializeField] private Material sunMaterial = null;
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
@@ -24,11 +22,14 @@ public class EndOfLoopController : MonoBehaviour
     private PlayerCameraEffectController _playerCameraEffectController;
     private GameObject _sun;
     private Animator _sunAnimator;
+    private Conductor _conductor;
+    private OWAudioSource[] _planetAmbienceVolumes;
 
     private void Awake()
     {
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
         _sunAnimator = gameObject.GetComponent<Animator>();
+        LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
         
         boundsRenderer.enabled = false;
         var transferAreaRenderer = transferArea.GetComponent<MeshRenderer>();
@@ -43,6 +44,16 @@ public class EndOfLoopController : MonoBehaviour
     private void Start()
     {
         _sun = GameObject.Find("Jam4Sun_Body/Sector/Star");
+    }
+
+    private void OnPlanetLoad(string name)
+    {
+        if (name == "Living Planet")
+        {
+            _conductor = LuminaTerra.Instance.NewHorizons.GetPlanet(name).GetComponentInChildren<Conductor>();
+            _planetAmbienceVolumes = _conductor.GetPlanetAmbience();
+            _conductor.AssignEOLController(this);
+        }
     }
 
     private void Update()
@@ -73,7 +84,7 @@ public class EndOfLoopController : MonoBehaviour
             print($"{transferable.name} - {transferable.IsActivated}");
             // if (!transferable.IsActivated) continue;
             var objTransform = transferable.transform;
-            var objRelativePos = mainRitualTable.InverseTransformVector(objTransform.position - mainRitualTable.position);
+            var objRelativePos = _conductor.GetMainRitualTable().InverseTransformVector(objTransform.position - _conductor.GetMainRitualTable().position);
             var objLocalPos = new Vector3(objRelativePos.x, 0, objRelativePos.z);
             var distance = (float)(2 / (1 + Math.Exp(-objLocalPos.magnitude)) - 1) * transferArea.radius;
             objTransform.SetParent(transferArea.transform);
@@ -94,7 +105,7 @@ public class EndOfLoopController : MonoBehaviour
         Locator.GetFlashlight().TurnOff();
         Locator.GetToolModeSwapper().UnequipTool();
 
-        foreach (OWAudioSource source in planetAmbience)
+        foreach (OWAudioSource source in _planetAmbienceVolumes)
         {
             source.Stop();
         }
@@ -114,5 +125,10 @@ public class EndOfLoopController : MonoBehaviour
     {
         Locator.GetDeathManager().KillPlayer(DeathType.TimeLoop);
         enabled = false;
+    }
+
+    private void OnDestroy()
+    {
+        LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().RemoveListener(OnPlanetLoad);
     }
 }

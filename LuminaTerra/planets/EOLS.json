@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
+  "name": "EOLS",
+  "starSystem": "LT_System",
+  "canShowOnTitle": false,
+  "Base": {
+    "surfaceSize": 50,
+    "surfaceGravity": 0,
+    "showMinimap": false
+  },
+  "Orbit": {
+    "primaryBody": "Enduring Flame",
+    "inclination": 27,
+    "semiMajorAxis": 15000,
+    "siderealPeriod": 0,
+    "isStatic": true,
+    "showOrbitLine": false
+  },
+  "Props": {
+    "details": [
+      {
+        "assetBundle": "planets/assets/luminaterra",
+        "path": "Assets/LuminaTerra/EOLS/EndOfLoopSequence.prefab",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "keepLoaded": true
+      }
+    ]
+  },
+  "MapMarker": {
+    "enabled": false
+  },
+  "ShipLog": {
+    "mapMode": {
+      "remove": true
+    }
+  },
+  "ReferenceFrame": {
+    "enabled": false,
+    "hideInMap": true
+  }
+}

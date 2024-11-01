@@ -9,7 +9,6 @@
   },
   "Orbit": {
     "primaryBody": "Enduring Flame",
-    "inclination": 27,
     "semiMajorAxis": 10000,
     "siderealPeriod": 10
   },

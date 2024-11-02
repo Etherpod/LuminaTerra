@@ -30,6 +30,7 @@ public class CrystalItem : OWItem
     private EOLSTransferable _eolsTransferable = null;
     private float _originalLightSourceShapeRadius;
     private bool _knowsHeartSignal = false;
+    private EndOfLoopController _loopController;
 
     public override void Awake()
     {
@@ -82,6 +83,17 @@ public class CrystalItem : OWItem
                 Locator.GetShipLogManager().RevealFact("LT_CRYSTAL_ENERGIZER_USED");
                 _fading = false;
             }
+        }
+        else if (IsLit() && EndOfLoopController.EnteredSequence)
+        {
+            if (_loopController == null)
+            {
+                _loopController = FindObjectOfType<Conductor>().GetEOLController();
+            }
+
+            float heartDistSqr = _loopController.GetDistSqrFromHeart(transform.position);
+            float ratio = Mathf.InverseLerp(30f * 30f, 5f * 5f, heartDistSqr);
+            SetEmissiveScale(ratio);
         }
     }
 

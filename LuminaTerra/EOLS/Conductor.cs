@@ -12,6 +12,8 @@ public class Conductor : MonoBehaviour
     [SerializeField] private Transform mainRitualTable = null;
 
     private bool startedSequence = false;
+    private float debugTimeOffset = 0f;
+    private readonly float loopDuration = 1000f;
 
     public bool InEndSequence => startedSequence;
 
@@ -25,6 +27,18 @@ public class Conductor : MonoBehaviour
         trigger.OnEntry -= TriggerEntered;
     }*/
 
+    private void Awake()
+    {
+        GlobalMessenger.AddListener("GamePaused", OnGamePaused);
+        GlobalMessenger.AddListener("GameUnpaused", OnGameUnpaused);
+    }
+
+    private void OnDestroy()
+    {
+        GlobalMessenger.RemoveListener("GamePaused", OnGamePaused);
+        GlobalMessenger.RemoveListener("GameUnpaused", OnGameUnpaused);
+    }
+
     private void Update()
     {
         if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
@@ -33,7 +47,7 @@ public class Conductor : MonoBehaviour
             StartCoroutine(StartEOLS());
             startedSequence = true;
         }
-        if (!startedSequence && Time.timeSinceLevelLoad > 1000f - 32f)
+        if (!startedSequence && Time.timeSinceLevelLoad > loopDuration - 32f)
         {
             StartCoroutine(StartEOLS());
             startedSequence = true;
@@ -68,6 +82,28 @@ public class Conductor : MonoBehaviour
     public void AssignEOLController(EndOfLoopController controller)
     {
         endOfLoopController = controller;
+    }
+
+    public EndOfLoopController GetEOLController()
+    {
+        return endOfLoopController;
+    }
+
+    private void OnGamePaused()
+    {
+        if (startedSequence && musicSource.isPlaying)
+        {
+            musicSource.FadeOut(2f);
+        }
+    }
+
+    private void OnGameUnpaused()
+    {
+        if (startedSequence && !EndOfLoopController.EnteredSequence)
+        {
+            musicSource.time = 32f - (loopDuration - Time.timeSinceLevelLoad);
+            musicSource.FadeIn(2f);
+        }
     }
 
     /*private void TriggerEntered(GameObject hitObj)

@@ -20,12 +20,13 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private Material sunMaterial = null;
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
+    [SerializeField] private Transform heartTransform = null;
     
     private PlayerCameraEffectController _playerCameraEffectController;
-    private GameObject _sun;
     private Animator _sunAnimator;
     private Conductor _conductor;
     private OWAudioSource[] _planetAmbienceVolumes;
+    private float _lastMusicTime;
 
     public static bool EnteredSequence = false;
 
@@ -34,6 +35,8 @@ public class EndOfLoopController : MonoBehaviour
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
         _sunAnimator = gameObject.GetComponent<Animator>();
         LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
+        GlobalMessenger.AddListener("GamePaused", OnGamePaused);
+        GlobalMessenger.AddListener("GameUnpaused", OnGameUnpaused);
 
         // boundsRenderer.enabled = false;
 
@@ -45,7 +48,6 @@ public class EndOfLoopController : MonoBehaviour
 
     private void Start()
     {
-        _sun = GameObject.Find("Jam4Sun_Body/Sector/Star");
         SunOverrideVolume vol = GetComponentInChildren<SunOverrideVolume>();
         vol._sector = GetComponentInParent<Sector>();
         vol._sector.OnSectorOccupantsUpdated += vol.OnSectorOccupantsUpdated;
@@ -73,6 +75,7 @@ public class EndOfLoopController : MonoBehaviour
 
         if (num >= 0.99)
         {
+            _lastMusicTime = -1;
             EndEOLS();
         }
         else if (!windAudio.isPlaying && num > 0)
@@ -154,6 +157,41 @@ public class EndOfLoopController : MonoBehaviour
         Locator.GetDeathManager().KillPlayer(DeathType.TimeLoop);
         Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_DEATH");
         enabled = false;
+    }
+
+    public float GetDistSqrFromHeart(Vector3 point)
+    {
+        return (heartTransform.position - point).sqrMagnitude;
+    }
+
+    private void OnGamePaused()
+    {
+        if (EnteredSequence)
+        {
+            if (ambientSound.isPlaying)
+            {
+                _lastMusicTime = ambientSound.time;
+                ambientSound.FadeOut(2f);
+            }
+            if (windAudio.isPlaying)
+            {
+                windAudio.FadeOut(2f);
+            }
+        }
+    }
+
+    private void OnGameUnpaused()
+    {
+        if (_lastMusicTime >= 0f)
+        {
+            ambientSound.time = _lastMusicTime;
+            ambientSound.FadeIn(2f);
+        }
+        float num = Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time);
+        if (num > 0)
+        {
+            windAudio.FadeIn(4f);
+        }
     }
 
     private void OnDestroy()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LuminaTerra;
 
@@ -10,6 +11,7 @@ public class RitualTableController : MonoBehaviour
     [SerializeField] CrystalDetector _slot3Detector = null;
     [SerializeField] ItemDetector _itemDetector = null;
     [SerializeField] string _solution = "Red Blue Purple";
+    [SerializeField] private OWAudioSource _loopingAudio = null;
 
     private readonly CrystalItem[] _crystals = new CrystalItem[3];
     private List<OWItem> _activeItems = [];
@@ -31,26 +33,53 @@ public class RitualTableController : MonoBehaviour
         if (_crystals[slot] == null)
         {
             _crystals[slot] = crystal;
+
+            if (IsCorrectSolution() && _activeItems.Count > 0)
+            {
+                _loopingAudio.FadeIn(1f);
+                foreach (OWItem item in _activeItems)
+                {
+                    if (item.TryGetComponent(out EOLSTransferable transfer))
+                    {
+                        transfer.SetEOLSActivation(true);
+                    }
+                }
+            }
         }
     }
 
-    private void OnCrystalExit(CrystalItem item, int slot)
+    private void OnCrystalExit(CrystalItem crystal, int slot)
     {
         if (_crystals[slot] != null)
         {
             _crystals[slot] = null;
+
+            if (_loopingAudio.isPlaying)
+            {
+                _loopingAudio.FadeOut(1f);
+            }
+            foreach (OWItem item in _activeItems)
+            {
+                if (item.TryGetComponent(out EOLSTransferable transfer))
+                {
+                    transfer.SetEOLSActivation(false);
+                }
+            }
         }
     }
 
     private void OnItemEnter(OWItem item)
     {
-        LuminaTerra.Instance.ModHelper.Console.WriteLine("correct: " + IsCorrectSolution());
         if (!_activeItems.Contains(item))
         {
             _activeItems.Add(item);
-            if (item.TryGetComponent(out EOLSTransferable transfer))
+            if (IsCorrectSolution())
             {
-                transfer.SetEOLSActivation(true);
+                _loopingAudio.FadeIn(1f);
+                if (item.TryGetComponent(out EOLSTransferable transfer))
+                {
+                    transfer.SetEOLSActivation(true);
+                }
             }
         }
     }
@@ -60,9 +89,14 @@ public class RitualTableController : MonoBehaviour
         if (_activeItems.Contains(item))
         {
             _activeItems.Remove(item);
+
+            if (_activeItems.Count == 0 && _loopingAudio.isPlaying)
+            {
+                _loopingAudio.FadeOut(1f);
+            }
             if (item.TryGetComponent(out EOLSTransferable transfer))
             {
-                transfer.SetEOLSActivation(true);
+                transfer.SetEOLSActivation(false);
             }
         }
     }
@@ -77,6 +111,7 @@ public class RitualTableController : MonoBehaviour
                 return false;
             }
         }
+        Locator.GetShipLogManager().RevealFact("LT_RITUAL_CHAMBER_SOLUTION");
         return true;
     }
 

@@ -54,12 +54,22 @@
 
     <ExploreFact>
       <ID>LT_VISION_REALM_ENTER</ID>
-      <Text>I woke up in a void filled with stars after losing consciousness. A strange white crystal and this system's sun were also there.</Text>
+      <Text>I woke up in a void filled with stars after losing consciousness. The Crystal Heart, a strange diagram of shapes, and this system's sun were arranged on a floating platform.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_VISION_REALM_DEATH</ID>
       <Text>The stars started to disappear until the Sun was the only remaining star. Shortly afterwards the Sun also died, leaving me in complete darkness.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_VISION_REALM_BRIDGE</ID>
+      <Text>I found a long bridge spanning across the void. At the end of the bridge I saw a glowing door.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_VISION_REALM_TRANSPORTATION</ID>
+      <Text>When I placed the lantern on the strange table with the three crystals, it appeared in the void with me.</Text>
     </ExploreFact>
   </Entry>
 
@@ -105,7 +115,7 @@
 
     <ExploreFact>
       <ID>LT_CRYSTAL_ENERGIZER_ENTER</ID>
-      <Text>A worn down building with a strange pedestal on the second floor.</Text>
+      <Text>A worn down building with a strange pedestal on the second floor. The pedestal has a small label showing a regular crystal beginning to glow.</Text>
     </ExploreFact>
 
     <ExploreFact>
@@ -115,6 +125,7 @@
 
     <ExploreFact>
       <ID>LT_CRYSTAL_ENERGIZER_USED</ID>
+      <IgnoreMoreToExplore/>
       <Text>When I placed an unlit crystal on the table, it began to glow and started emitting a signal on the Electromagnetic Waves frequency.</Text>
     </ExploreFact>
   </Entry>
@@ -138,11 +149,17 @@
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_DOOR</ID>
-      <Text>There is a locked door at the back of the building at the bottom of a staircase. A tablet at the top of the staircase shows a drawing of a lit lantern.</Text>
+      <Text>There is a locked door at the back of the building at the bottom of a staircase. A tablet at the top of the staircase shows a drawing of a light that is crossed out.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_RECORDS_CRYSTALS</ID>
+      <Text>I found a diagram showing three glowing crystals in three different shapes. It also shows a checkmark next to a drawing of a glowing crystal and an X next to a drawing of a regular crystal.</Text>
     </ExploreFact>
 
     <ExploreFact>
       <ID>LT_RITUAL_RECORDS_RITUAL</ID>
+      <IgnoreMoreToExplore/>
       <Text>I found a strange diagram behind the locked door. It showed three symbols in three shapes: a series of lines in a pentagon, a circle with three dots in a hexagon, and a strange Y-shaped symbol in a septagon.</Text>
     </ExploreFact>
   </Entry>
@@ -168,6 +185,12 @@
     <ExploreFact>
       <ID>LT_RITUAL_CHAMBER_TABLE</ID>
       <Text>I found a drawing on a wall next to the large table. It shows the layout of the table with 4 labeled areas: the large circle at the center, a pentagon, a hexagon, and a septagon.</Text>
+    </ExploreFact>
+
+    <ExploreFact>
+      <ID>LT_RITUAL_CHAMBER_SOLUTION</ID>
+      <IgnoreMoreToExplore/>
+      <Text>When I placed three specific crystals in a circle around an item, the item started emitting a signal on the same frequency as the crystals.</Text>
     </ExploreFact>
   </Entry>
 </AstroObjectEntry>

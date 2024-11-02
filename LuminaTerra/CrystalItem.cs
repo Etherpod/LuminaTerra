@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NewHorizons.External;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LuminaTerra;
@@ -28,6 +29,7 @@ public class CrystalItem : OWItem
     private List<CrystalDetector> _currentDetectors = [];
     private EOLSTransferable _eolsTransferable = null;
     private float _originalLightSourceShapeRadius;
+    private bool _knowsHeartSignal = false;
 
     public override void Awake()
     {
@@ -35,6 +37,8 @@ public class CrystalItem : OWItem
         _baseLightIntensity = _light.intensity;
         _eolsTransferable = gameObject.GetComponent<EOLSTransferable>();
         _originalLightSourceShapeRadius = _lightSourceShape.radius;
+        _knowsHeartSignal = NewHorizonsData.KnowsSignal("Heart of the Planet");
+        LuminaTerra.Instance.OnLearnHeartSignal += OnLearnHeartSignal;
         base.Awake();
     }
 
@@ -50,7 +54,7 @@ public class CrystalItem : OWItem
         {
             _charged = true;
             _fadeT = 1f;
-            _signalParent.SetActive(true);
+            _signalParent.SetActive(_knowsHeartSignal);
             SetEmissiveScale(1f);
             _light.intensity = _baseLightIntensity;
             _eolsTransferable?.SetEOLSActivation(true);
@@ -73,7 +77,7 @@ public class CrystalItem : OWItem
             }
             else
             {
-                _signalParent.SetActive(_charged);
+                _signalParent.SetActive(_knowsHeartSignal && _charged);
                 _eolsTransferable?.SetEOLSActivation(_charged);
                 Locator.GetShipLogManager().RevealFact("LT_CRYSTAL_ENERGIZER_USED");
                 _fading = false;
@@ -99,7 +103,7 @@ public class CrystalItem : OWItem
 
         if (_charged)
         {
-            _signalParent.SetActive(true);
+            _signalParent.SetActive(_knowsHeartSignal);
         }
 
         _lightSourceShape.radius = _originalLightSourceShapeRadius;
@@ -144,6 +148,15 @@ public class CrystalItem : OWItem
         return _namePrefix;
     }
 
+    private void OnLearnHeartSignal()
+    {
+        if (!_knowsHeartSignal)
+        {
+            _knowsHeartSignal = true;
+            _signalParent.SetActive(_charged);
+        }
+    }
+
     private void SetEmissiveScale(float scale)
     {
         foreach (var rend in _emissiveRenderers)
@@ -159,4 +172,10 @@ public class CrystalItem : OWItem
     }
 
     public bool IsCharged() => _charged;
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        LuminaTerra.Instance.OnLearnHeartSignal -= OnLearnHeartSignal;
+    }
 }

@@ -28,6 +28,13 @@
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" IncludeAssets="compile" />
     <PackageReference Include="DitzyExtensions" Version="1.2.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NewHorizons">
+      <HintPath>$(OuterWildsModsDirectory)\xen.NewHorizons\NewHorizons.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
   
   <ItemGroup>
     <None Include="default-config.json">

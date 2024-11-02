@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using NewHorizons.Builder.Props.Audio;
 using OWML.Common;
 using OWML.ModHelper;
 using OWML.Utils;
@@ -11,6 +12,9 @@ namespace LuminaTerra
         public static LuminaTerra Instance;
         public INewHorizons NewHorizons;
         public ItemType CrystalItemType;
+
+        public delegate void SignalLearnEvent();
+        public event SignalLearnEvent OnLearnHeartSignal;
 
         public void Awake()
         {
@@ -42,6 +46,26 @@ namespace LuminaTerra
         {
             if (newScene != OWScene.SolarSystem) return;
             ModHelper.Console.WriteLine("Loaded into solar system!", MessageType.Success);
+        }
+
+        public void LearnHeartSignal()
+        {
+            OnLearnHeartSignal?.Invoke();
+        }
+    }
+
+    [HarmonyPatch]
+    public static class LuminaTerraPatches
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
+        public static void CheckForHeartSignal(SignalName signalName)
+        {
+            string customSignalName = SignalBuilder.GetCustomSignalName(signalName);
+            if (customSignalName == "Heart of the Planet")
+            {
+                LuminaTerra.Instance.LearnHeartSignal();
+            }
         }
     }
 }

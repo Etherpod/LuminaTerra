@@ -88,5 +88,25 @@ namespace LuminaTerra
                 __result = true;
             }
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Flashlight), nameof(Flashlight.TurnOn))]
+        public static bool DisableFlashlightEOLS()
+        {
+            return !EndOfLoopController.EnteredSequence;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+        public static bool DisableFlashlightEOLS(ToolMode mode)
+        {
+            if (EndOfLoopController.EnteredSequence &&
+                (mode == ToolMode.SignalScope || mode == ToolMode.Probe))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

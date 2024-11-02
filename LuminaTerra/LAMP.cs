@@ -143,6 +143,7 @@ public class LAMP : OWItem
         }
         
         PlaySiphonCaptureSFX();
+        Locator.GetFlashlight().TurnOff();
 
         detectedLights
             .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))

@@ -27,6 +27,8 @@ public class EndOfLoopController : MonoBehaviour
     private Conductor _conductor;
     private OWAudioSource[] _planetAmbienceVolumes;
 
+    public static bool EnteredSequence = false;
+
     private void Awake()
     {
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
@@ -136,6 +138,7 @@ public class EndOfLoopController : MonoBehaviour
         ambientSound.FadeIn(3, true);
         _sunAnimator.SetTrigger(TriggerDie);
 
+        EnteredSequence = true;
         Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_ENTER");
 
         _playerCameraEffectController._owCamera.postProcessingSettings.vignetteEnabled = true;

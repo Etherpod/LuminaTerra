@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DitzyExtensions.Collection;
 using UnityEngine;
+using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
 
@@ -11,12 +13,11 @@ public class EndOfLoopController : MonoBehaviour
     private static readonly int TriggerDie = Animator.StringToHash("die");
     
     [SerializeField] private Transform playerSpawn = null;
-    [SerializeField] private MeshRenderer boundsRenderer = null;
+    // [SerializeField] private MeshRenderer boundsRenderer = null;
     [SerializeField] private ParticleSystem stars = null;
     [SerializeField] private OWAudioSource ambientSound = null;
     [SerializeField] private OWAudioSource windAudio = null;
-    [SerializeField] private Transform transferPointsParent = null;
-    [SerializeField] private Transform[] ritualTransferPoints = null;
+    [SerializeField] private CylinderShape transferArea = null;
     [SerializeField] private Material sunMaterial = null;
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
@@ -39,6 +40,7 @@ public class EndOfLoopController : MonoBehaviour
         GlobalMessenger.AddListener("GameUnpaused", OnGameUnpaused);
 
         // boundsRenderer.enabled = false;
+        transferArea.gameObject.SetActive(false);
 
         foreach (var refObj in refs)
         {
@@ -88,37 +90,24 @@ public class EndOfLoopController : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        List<Transform> targetablePoints = [.. transferPointsParent.GetComponentsInChildren<Transform>()];
-        foreach (var transferable in FindObjectsOfType<EOLSTransferable>())
+        var sector = GetComponentInParent<Sector>();
+        FindObjectsOfType<EOLSTransferable>().ForEach(transferable =>
         {
-            if (!transferable.IsActivated) continue;
+            if (!transferable.IsActivated) return;
 
             var objTransform = transferable.transform;
+            var objRelativePos = _conductor.GetMainRitualTable()
+                .InverseTransformVector(objTransform.position - _conductor.GetMainRitualTable().position);
+            var objLocalPos = new Vector3(objRelativePos.x, 0, objRelativePos.z);
+            var distance = (float)(2 / (1 + Math.Exp(-objLocalPos.magnitude)) - 1) * transferArea.radius;
+            objTransform.SetParent(transform);
+            objTransform.SetPositionAndRotation(
+                transferArea.transform.position + transferArea.transform.TransformVector(objLocalPos.normalized * distance),
+                transferArea.transform.rotation
+            );
 
-            if (transferable.OnRitual && transferable.CurrentRitualSlot != -1)
-            {
-                Transform target = ritualTransferPoints[transferable.CurrentRitualSlot];
-                objTransform.SetParent(target);
-                objTransform.localPosition = Vector3.zero;
-                objTransform.localRotation = Quaternion.Euler(0, 0, 0);
-                continue;
-            }
-
-            int index = UnityEngine.Random.Range(0, targetablePoints.Count);
-            if (targetablePoints[index] == transferPointsParent)
-            {
-                targetablePoints.RemoveAt(index);
-                index = UnityEngine.Random.Range(0, targetablePoints.Count);
-            }
-            objTransform.SetParent(targetablePoints[index]);
-            objTransform.localPosition = Vector3.zero;
-            objTransform.localRotation = Quaternion.Euler(0, 0, 0);
-            if (objTransform.TryGetComponent(out OWItem item))
-            {
-                item.SetSector(GetComponentInParent<Sector>());
-            }
-            targetablePoints.RemoveAt(index);
-        }
+            objTransform.gameObject.GetComponents<SectoredMonoBehaviour>()?.ForEach(smb => smb.SetSector(sector));
+        });
         
         stars.Simulate(22f);
         stars.Play();

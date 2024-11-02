@@ -42,7 +42,7 @@ public class Conductor : MonoBehaviour
     private IEnumerator StartEOLS()
     {
         Locator.GetAudioMixer().MixEndTimes(5f);
-        musicSource.Play();
+        musicSource.FadeIn(0.5f);
         
         yield return new WaitUntil(() => musicSource.time >= 29f);
 

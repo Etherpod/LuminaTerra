@@ -134,6 +134,7 @@
     <ID>LT_RITUAL_RECORDS</ID>
     <Name>Records Building</Name>
     <Curiosity>LT_RITUAL_CHAMBER</Curiosity>
+    <AltPhotoCondition>LT_RITUAL_RECORDS_RITUAL</AltPhotoCondition>
 
     <RumorFact>
       <ID>LT_RITUAL_RECORDS_TUNNEL</ID>

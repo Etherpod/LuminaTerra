@@ -37,6 +37,7 @@ public class RitualTableController : MonoBehaviour
             if (IsCorrectSolution() && _activeItems.Count > 0)
             {
                 _loopingAudio.FadeIn(1f);
+                Locator.GetShipLogManager().RevealFact("LT_RITUAL_CHAMBER_SOLUTION");
                 foreach (OWItem item in _activeItems)
                 {
                     if (item.TryGetComponent(out EOLSTransferable transfer))
@@ -76,6 +77,7 @@ public class RitualTableController : MonoBehaviour
             if (IsCorrectSolution())
             {
                 _loopingAudio.FadeIn(1f);
+                Locator.GetShipLogManager().RevealFact("LT_RITUAL_CHAMBER_SOLUTION");
                 if (item.TryGetComponent(out EOLSTransferable transfer))
                 {
                     transfer.SetEOLSActivation(true);
@@ -111,7 +113,6 @@ public class RitualTableController : MonoBehaviour
                 return false;
             }
         }
-        Locator.GetShipLogManager().RevealFact("LT_RITUAL_CHAMBER_SOLUTION");
         return true;
     }
 

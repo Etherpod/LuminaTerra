@@ -31,7 +31,7 @@ public class EndOfLoopController : MonoBehaviour
         _sunAnimator = gameObject.GetComponent<Animator>();
         LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
 
-        boundsRenderer.enabled = false;
+        // boundsRenderer.enabled = false;
         var transferAreaRenderer = transferArea.GetComponent<MeshRenderer>();
         if (transferAreaRenderer) transferAreaRenderer.enabled = false;
 
@@ -97,7 +97,7 @@ public class EndOfLoopController : MonoBehaviour
         
         stars.Simulate(22f);
         stars.Play();
-
+        
         var player = Locator.GetPlayerBody();
 
         player.SetPosition(playerSpawn.position);

@@ -32,7 +32,7 @@ public class Conductor : MonoBehaviour
             StartCoroutine(StartEOLS());
             startedSequence = true;
         }*/
-        if (!startedSequence && Time.timeSinceLevelLoad > 600f - 32f)
+        if (!startedSequence && Time.timeSinceLevelLoad > 1000f - 32f)
         {
             StartCoroutine(StartEOLS());
             startedSequence = true;

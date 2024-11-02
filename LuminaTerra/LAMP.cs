@@ -2,6 +2,7 @@
 using System.Linq;
 using DitzyExtensions.Collection;
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
@@ -16,6 +17,7 @@ public class LAMP : OWItem
 
     public static ItemType LAMPType = (ItemType)(10 << 1);
 
+    [SerializeField] private SphereShape _lightVolumeShape = null;
     [SerializeField] private OWAudioSource doorAudioSource = null;
     [SerializeField] private OWAudioSource siphonAudioSource = null;
     [SerializeField] private AudioClip doorOpenClip = null;
@@ -30,6 +32,7 @@ public class LAMP : OWItem
     private IList<CapturableLight> _capturedLights = new List<CapturableLight>(8);
     private List<ItemDetector> _currentDetectors = [];
     private bool _close = false;
+    private float _originalLightVolumeShapeScale;
 
     public override string GetDisplayName() => "Lantern";
 
@@ -41,6 +44,7 @@ public class LAMP : OWItem
         _triggerVolume = GetComponentInChildren<OWTriggerVolume>();
         _lightController = GetComponent<CapturableLight>();
         _type = LAMPType;
+        _originalLightVolumeShapeScale = _lightVolumeShape.radius;
 
         _lightController.OnScaleChangeComplete += LAMPScaleChangeComplete;
 
@@ -170,6 +174,8 @@ public class LAMP : OWItem
                 }
             }
         }
+
+        _lightVolumeShape.radius = _originalLightVolumeShapeScale;
     }
 
     public override void PickUpItem(Transform holdTranform)
@@ -182,5 +188,7 @@ public class LAMP : OWItem
         }
 
         _currentDetectors.Clear();
+
+        _lightVolumeShape.radius = _originalLightVolumeShapeScale / holdTranform.localScale.x;
     }
 }

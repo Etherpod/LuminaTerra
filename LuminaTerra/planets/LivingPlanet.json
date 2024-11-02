@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
-  "name": "Living Planet",
+  "name": "Shimmering Heart",
   "starSystem": "LT_System",
   "canShowOnTitle": false,
   "Base": {
@@ -21,41 +21,41 @@
     "playerSpawnPoints": [
       {
         "startWithSuit": true,
-        "isRelativeToParent": true,
-        "parentPath": "Sector/LivingPlanet/debug/player spawn"
-//        "alignRadial": false,
-//        "position": {
-//          "x": 300,
-//          "y": 262,
-//          "z": 1506
-//        },
-//        "rotation": {
-//          "x": 6,
-//          "y": 198,
-//          "z": 245
-//        },
-//        "offset": {
-//          "x": 0,
-//          "y": 0,
-//          "z": 0
-//        }
+        //"isRelativeToParent": true,
+        //"parentPath": "Sector/LivingPlanet/debug/player spawn",
+        "alignRadial": false,
+        "position": {
+          "x": 300,
+          "y": 262,
+          "z": 1506
+        },
+        "rotation": {
+          "x": 6,
+          "y": 198,
+          "z": 245
+        },
+        "offset": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
       }
     ],
     "shipSpawnPoints": [
       {
-        "isRelativeToParent": true,
-        "parentPath": "Sector/LivingPlanet/debug/ship spawn"
-//        "alignRadial": false,
-//        "position": {
-//          "x": 300,
-//          "y": 262,
-//          "z": 1506
-//        },
-//        "rotation": {
-//          "x": 6,
-//          "y": 198,
-//          "z": 245
-//        }
+        //"isRelativeToParent": true,
+        //"parentPath": "Sector/LivingPlanet/debug/ship spawn",
+        "alignRadial": false,
+        "position": {
+          "x": 300,
+          "y": 262,
+          "z": 1506
+        },
+        "rotation": {
+          "x": 6,
+          "y": 198,
+          "z": 245
+        }
       }
     ]
   },
@@ -94,6 +94,8 @@
         "frequency": "Electromagnetic Waves",
         "audio": "planets/audio/CrystalHum_Low.mp3",
         "onlyAudibleToScope": true,
+        "detectionRadius": 20,
+        "identificationRadius": 3,
         "parentPath": "Sector/LivingPlanet/Crystals/RedCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -107,6 +109,8 @@
         "frequency": "Electromagnetic Waves",
         "audio": "planets/audio/CrystalHum_Mid.mp3",
         "onlyAudibleToScope": true,
+        "detectionRadius": 20,
+        "identificationRadius": 3,
         "parentPath": "Sector/LivingPlanet/Crystals/BlueCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -120,6 +124,8 @@
         "frequency": "Electromagnetic Waves",
         "audio": "planets/audio/CrystalHum_HighMid.mp3",
         "onlyAudibleToScope": true,
+        "detectionRadius": 20,
+        "identificationRadius": 3,
         "parentPath": "Sector/LivingPlanet/Crystals/GreenCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -133,6 +139,8 @@
         "frequency": "Electromagnetic Waves",
         "audio": "planets/audio/CrystalHum_High.mp3",
         "onlyAudibleToScope": true,
+        "detectionRadius": 20,
+        "identificationRadius": 3,
         "parentPath": "Sector/LivingPlanet/Crystals/PurpleCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {

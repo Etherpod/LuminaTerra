@@ -10,6 +10,8 @@ public class CrystalItem : OWItem
     [SerializeField]
     private GameObject _signalParent = null;
     [SerializeField]
+    private SphereShape _lightSourceShape = null;
+    [SerializeField]
     private OWEmissiveRenderer[] _emissiveRenderers = null;
     [SerializeField]
     private Light _light = null;
@@ -25,12 +27,14 @@ public class CrystalItem : OWItem
     private float _baseLightIntensity;
     private List<CrystalDetector> _currentDetectors = [];
     private EOLSTransferable _eolsTransferable = null;
+    private float _originalLightSourceShapeRadius;
 
     public override void Awake()
     {
         ItemType = LuminaTerra.Instance.CrystalItemType;
         _baseLightIntensity = _light.intensity;
         _eolsTransferable = gameObject.GetComponent<EOLSTransferable>();
+        _originalLightSourceShapeRadius = _lightSourceShape.radius;
         base.Awake();
     }
 
@@ -97,6 +101,8 @@ public class CrystalItem : OWItem
         {
             _signalParent.SetActive(true);
         }
+
+        _lightSourceShape.radius = _originalLightSourceShapeRadius;
     }
 
     public override void PickUpItem(Transform holdTranform)
@@ -111,6 +117,8 @@ public class CrystalItem : OWItem
         {
             _signalParent.SetActive(false);
         }
+
+        _lightSourceShape.radius = _originalLightSourceShapeRadius / holdTranform.localScale.x;
     }
 
     public void SetCharged(bool newState, float fadeLength = 1f)

@@ -51,11 +51,12 @@ public class EndOfLoopController : MonoBehaviour
 
     private void OnPlanetLoad(string name)
     {
-        if (name == "Living Planet")
+        if (name == "Shimmering Heart")
         {
             _conductor = LuminaTerra.Instance.NewHorizons.GetPlanet(name).GetComponentInChildren<Conductor>();
             _planetAmbienceVolumes = _conductor.GetPlanetAmbience();
             _conductor.AssignEOLController(this);
+            gameObject.SetActive(false);
         }
     }
 
@@ -115,6 +116,8 @@ public class EndOfLoopController : MonoBehaviour
         ambientSound.FadeIn(3, true);
         _sunAnimator.SetTrigger(TriggerDie);
 
+        Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_ENTER");
+
         _playerCameraEffectController._owCamera.postProcessingSettings.vignetteEnabled = true;
         _playerCameraEffectController._owCamera.postProcessingSettings.vignette.color = Color.black;
         _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = 0f;
@@ -126,6 +129,7 @@ public class EndOfLoopController : MonoBehaviour
     private void EndEOLS()
     {
         Locator.GetDeathManager().KillPlayer(DeathType.TimeLoop);
+        Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_DEATH");
         enabled = false;
     }
 

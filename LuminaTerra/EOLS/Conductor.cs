@@ -14,7 +14,7 @@ public class Conductor : MonoBehaviour
 
     private bool startedSequence = false;
 
-    private void Awake()
+    /*private void Awake()
     {
         trigger.OnEntry += TriggerEntered;
     }
@@ -22,16 +22,17 @@ public class Conductor : MonoBehaviour
     private void OnDestroy()
     {
         trigger.OnEntry -= TriggerEntered;
-    }
+    }*/
 
     private void Update()
     {
-        if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
+/*        if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
+            LuminaTerra.Instance.ModHelper.Console.WriteLine("start");
             StartCoroutine(StartEOLS());
             startedSequence = true;
-        }
-        else if (!startedSequence && Time.timeSinceLevelLoad > 1000000f - 32f)
+        }*/
+        if (!startedSequence && Time.timeSinceLevelLoad > 600f - 32f)
         {
             StartCoroutine(StartEOLS());
             startedSequence = true;

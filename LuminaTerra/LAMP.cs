@@ -24,6 +24,7 @@ public class LAMP : OWItem
     [SerializeField] private AudioClip doorCloseClip = null;
     [SerializeField] private AudioClip siphonCaptureClip = null;
     [SerializeField] private AudioClip siphonReleaseClip = null;
+    [SerializeField] private GameObject signalParent = null;
 
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
@@ -49,6 +50,11 @@ public class LAMP : OWItem
         _lightController.OnScaleChangeComplete += LAMPScaleChangeComplete;
 
         base.Awake();
+    }
+
+    private void Start()
+    {
+        signalParent.SetActive(false);
     }
 
     public override void OnDestroy()
@@ -151,6 +157,11 @@ public class LAMP : OWItem
         _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, LAMPFadeDurationSeconds);
+    }
+
+    public void UpdateSignalState(bool enabled)
+    {
+        signalParent.SetActive(enabled);
     }
 
     public override void DropItem(

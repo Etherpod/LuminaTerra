@@ -4,6 +4,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using OWML.Utils;
 using System.Reflection;
+using UnityEngine;
 
 namespace LuminaTerra
 {
@@ -65,6 +66,26 @@ namespace LuminaTerra
             if (customSignalName == "Heart of the Planet")
             {
                 LuminaTerra.Instance.LearnHeartSignal();
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Campfire), nameof(Campfire.CanSleepHereNow))]
+        public static void PreventSleepingDuringEOLS(ref bool __result)
+        {
+            if (Object.FindObjectOfType<Conductor>().InEndSequence)
+            {
+                __result = false;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Campfire), nameof(Campfire.ShouldWakeUp))]
+        public static void WakeUpBeforeEOLS(ref bool __result)
+        {
+            if (Object.FindObjectOfType<Conductor>().InEndSequence)
+            {
+                __result = true;
             }
         }
     }

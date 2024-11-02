@@ -61,6 +61,11 @@ public class HeartSlidesInterface : MonoBehaviour
         _oneShotAudio.PlayOneShot(AudioType.NomaiDoorStop);
         _loopingAudio.Stop();
     }
+    
+    public void DisableProjector()
+    {
+        _projector.SetProjectorActive(false);
+    }
 
     private void PlayMusic()
     {

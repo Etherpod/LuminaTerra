@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LuminaTerra;
@@ -14,7 +15,8 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private ParticleSystem stars = null;
     [SerializeField] private OWAudioSource ambientSound = null;
     [SerializeField] private OWAudioSource windAudio = null;
-    [SerializeField] private CylinderShape transferArea = null;
+    [SerializeField] private Transform transferPointsParent = null;
+    [SerializeField] private Transform[] ritualTransferPoints = null;
     [SerializeField] private Material sunMaterial = null;
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
@@ -32,8 +34,6 @@ public class EndOfLoopController : MonoBehaviour
         LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
 
         // boundsRenderer.enabled = false;
-        var transferAreaRenderer = transferArea.GetComponent<MeshRenderer>();
-        if (transferAreaRenderer) transferAreaRenderer.enabled = false;
 
         foreach (var refObj in refs)
         {
@@ -83,22 +83,42 @@ public class EndOfLoopController : MonoBehaviour
     {
         gameObject.SetActive(true);
 
+        List<Transform> targetablePoints = [.. transferPointsParent.GetComponentsInChildren<Transform>()];
         foreach (var transferable in FindObjectsOfType<EOLSTransferable>())
         {
-             if (!transferable.IsActivated) continue;
+            if (!transferable.IsActivated) continue;
+
             var objTransform = transferable.transform;
-            var objRelativePos = _conductor.GetMainRitualTable().InverseTransformVector(objTransform.position - _conductor.GetMainRitualTable().position);
-            var objLocalPos = new Vector3(objRelativePos.x, 0, objRelativePos.z);
-            var distance = (float)(2 / (1 + Math.Exp(-objLocalPos.magnitude)) - 1) * transferArea.radius;
-            objTransform.SetParent(transferArea.transform);
-            objTransform.localPosition = objLocalPos.normalized * distance;
+
+            if (transferable.OnRitual && transferable.CurrentRitualSlot != -1)
+            {
+                Transform target = ritualTransferPoints[transferable.CurrentRitualSlot];
+                objTransform.SetParent(target);
+                objTransform.localPosition = Vector3.zero;
+                objTransform.localRotation = Quaternion.Euler(0, 0, 0);
+                continue;
+            }
+
+            int index = UnityEngine.Random.Range(0, targetablePoints.Count);
+            if (targetablePoints[index] == transferPointsParent)
+            {
+                targetablePoints.RemoveAt(index);
+                index = UnityEngine.Random.Range(0, targetablePoints.Count);
+            }
+            objTransform.SetParent(targetablePoints[index]);
+            objTransform.localPosition = Vector3.zero;
             objTransform.localRotation = Quaternion.Euler(0, 0, 0);
+            if (objTransform.TryGetComponent(out OWItem item))
+            {
+                item.SetSector(GetComponentInParent<Sector>());
+            }
+            targetablePoints.RemoveAt(index);
         }
         
         stars.Simulate(22f);
         stars.Play();
         
-        var player = Locator.GetPlayerBody();
+        var player = Locator.GetPlayerBody() as PlayerBody;
 
         player.SetPosition(playerSpawn.position);
         player.SetRotation(playerSpawn.rotation);

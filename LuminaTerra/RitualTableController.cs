@@ -33,7 +33,7 @@ public class RitualTableController : MonoBehaviour
         if (_crystals[slot] == null)
         {
             _crystals[slot] = crystal;
-
+            crystal.GetComponent<EOLSTransferable>().SetRitualActivation(true, slot);
             if (IsCorrectSolution() && _activeItems.Count > 0)
             {
                 _loopingAudio.FadeIn(1f);
@@ -43,6 +43,12 @@ public class RitualTableController : MonoBehaviour
                     if (item.TryGetComponent(out EOLSTransferable transfer))
                     {
                         transfer.SetEOLSActivation(true);
+                        transfer.SetRitualActivation(true, 3);
+                    }
+                    if (item is LAMP)
+                    {
+                        LAMP lamp = item as LAMP;
+                        lamp.UpdateSignalState(true);
                     }
                 }
             }
@@ -54,7 +60,7 @@ public class RitualTableController : MonoBehaviour
         if (_crystals[slot] != null)
         {
             _crystals[slot] = null;
-
+            crystal.GetComponent<EOLSTransferable>().SetRitualActivation(false);
             if (_loopingAudio.isPlaying)
             {
                 _loopingAudio.FadeOut(1f);
@@ -64,6 +70,12 @@ public class RitualTableController : MonoBehaviour
                 if (item.TryGetComponent(out EOLSTransferable transfer))
                 {
                     transfer.SetEOLSActivation(false);
+                    transfer.SetRitualActivation(false);
+                }
+                if (item is LAMP)
+                {
+                    LAMP lamp = item as LAMP;
+                    lamp.UpdateSignalState(false);
                 }
             }
         }
@@ -81,6 +93,12 @@ public class RitualTableController : MonoBehaviour
                 if (item.TryGetComponent(out EOLSTransferable transfer))
                 {
                     transfer.SetEOLSActivation(true);
+                    transfer.SetRitualActivation(true, 3);
+                }
+                if (item is LAMP)
+                {
+                    LAMP lamp = item as LAMP;
+                    lamp.UpdateSignalState(true);
                 }
             }
         }
@@ -99,6 +117,12 @@ public class RitualTableController : MonoBehaviour
             if (item.TryGetComponent(out EOLSTransferable transfer))
             {
                 transfer.SetEOLSActivation(false);
+                transfer.SetRitualActivation(false);
+            }
+            if (item is LAMP)
+            {
+                LAMP lamp = item as LAMP;
+                lamp.UpdateSignalState(false);
             }
         }
     }

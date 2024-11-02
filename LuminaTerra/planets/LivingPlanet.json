@@ -96,6 +96,7 @@
         "onlyAudibleToScope": true,
         "detectionRadius": 20,
         "identificationRadius": 3,
+        "sourceRadius": 0.5,
         "parentPath": "Sector/LivingPlanet/Crystals/RedCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -111,6 +112,7 @@
         "onlyAudibleToScope": true,
         "detectionRadius": 20,
         "identificationRadius": 3,
+        "sourceRadius": 0.5,
         "parentPath": "Sector/LivingPlanet/Crystals/BlueCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -126,6 +128,7 @@
         "onlyAudibleToScope": true,
         "detectionRadius": 20,
         "identificationRadius": 3,
+        "sourceRadius": 0.5,
         "parentPath": "Sector/LivingPlanet/Crystals/GreenCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
@@ -141,11 +144,28 @@
         "onlyAudibleToScope": true,
         "detectionRadius": 20,
         "identificationRadius": 3,
+        "sourceRadius": 0.5,
         "parentPath": "Sector/LivingPlanet/Crystals/PurpleCrystal_Item/Signal",
         "isRelativeToParent": true,
         "position": {
           "x": 0,
           "y": 0.25,
+          "z": 0
+        }
+      },
+      {
+        "name": "Charged Item",
+        "frequency": "Electromagnetic Waves",
+        "audio": "planets/audio/CrystalHum_Combined.ogg",
+        "onlyAudibleToScope": true,
+        "detectionRadius": 20,
+        "identificationRadius": 3,
+        "sourceRadius": 0.5,
+        "parentPath": "Sector/LivingPlanet/lamp/Signal",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 0,
+          "y": 0,
           "z": 0
         }
       }

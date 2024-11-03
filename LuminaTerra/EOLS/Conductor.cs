@@ -12,7 +12,7 @@ public class Conductor : MonoBehaviour
     [SerializeField] private Transform mainRitualTable = null;
 
     private bool startedSequence = false;
-    private float debugTimeOffset = 0f;
+    // private float debugTimeOffset = 0f;
     private readonly float loopDuration = 1000f;
 
     public bool InEndSequence => startedSequence;

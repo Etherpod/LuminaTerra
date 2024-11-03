@@ -5,8 +5,8 @@ namespace LuminaTerra;
 
 public class MysteriousDoorController : MonoBehaviour
 {
-    [SerializeField] private InteractReceiver _interactReceiver;
-    [SerializeField] private OWAudioSource _loopingAudio;
+    [SerializeField] private InteractReceiver _interactReceiver = null;
+    [SerializeField] private OWAudioSource _loopingAudio = null;
 
     private Animator _animator;
 

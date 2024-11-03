@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DitzyExtensions.Collection;
+using LuminaTerra.Util;
 using OWML.Utils;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
 using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
@@ -13,9 +13,6 @@ public class LAMP : OWItem
     private static readonly int AnimStateOpened = Animator.StringToHash("opened");
     private static readonly int AnimStateClosed = Animator.StringToHash("closed");
     private static readonly int AnimBoolOpen = Animator.StringToHash("open");
-    private static readonly float LightsFadeDurationSeconds = 1;
-    private static readonly float LampFadeDurationSeconds = 2;
-    private static readonly float LampCaptureTimeLimitSeconds = 5;
 
     public static ItemType LampType = EnumUtils.Create<ItemType>("LTLamp");
 
@@ -27,6 +24,9 @@ public class LAMP : OWItem
     [SerializeField] private AudioClip siphonCaptureClip = null;
     [SerializeField] private AudioClip siphonReleaseClip = null;
     [SerializeField] private GameObject signalParent = null;
+    [SerializeField] private float lightsFadeDurationSeconds = 1;
+    [SerializeField] private float lampFadeDurationSeconds = 2;
+    [SerializeField] private float lampCaptureTimeLimitSeconds = 8;
 
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
@@ -34,9 +34,11 @@ public class LAMP : OWItem
 
     private readonly IDictionary<int, CapturableLight> _capturedLights = new Dictionary<int, CapturableLight>(8);
     private readonly List<ItemDetector> _currentDetectors = [];
+    
     private float _originalLightVolumeShapeScale;
     private bool _isOpen = false;
     private bool _isReleasing = false;
+    private Fader _succTimer = new Fader();
 
     public override string GetDisplayName() => "Lantern";
 
@@ -84,7 +86,7 @@ public class LAMP : OWItem
         if (capturedLight.GetScale() == 0) return;
         
         LTPrint($"[{trackedObj.name}] out of range");
-        capturedLight.SetScale(1, LightsFadeDurationSeconds);
+        capturedLight.SetScale(1, lightsFadeDurationSeconds);
         _capturedLights.Remove(trackedObj.GetInstanceID());
 
         UpdateLampLight();
@@ -131,7 +133,12 @@ public class LAMP : OWItem
         }
         
         if (!_isOpen && IsDoorClosed) OpenLamp();
-        if (_isOpen && !_isReleasing) CaptureLights();
+        if (_isOpen && !_isReleasing)
+        {
+            CaptureLights();
+            if (!_succTimer.IsFading)
+                CloseLamp();
+        }
     }
 
     private void CloseDoor() => _animator.SetBool(AnimBoolOpen, false);
@@ -140,7 +147,7 @@ public class LAMP : OWItem
 
     private void CloseLamp()
     {
-        LTPrint("close lamp");
+        // LTPrint("close lamp");
         _isOpen = false;
         CloseDoor();
         
@@ -155,7 +162,7 @@ public class LAMP : OWItem
             .Where(light => light.IsBeingCaptured && light.GetScale() != 0)
             .ForEach(light =>
             {
-                light.SetScale(1, LightsFadeDurationSeconds);
+                light.SetScale(1, lightsFadeDurationSeconds);
                 _capturedLights.Remove(light.gameObject.GetInstanceID());
             });
 
@@ -164,7 +171,7 @@ public class LAMP : OWItem
 
     private void OpenLamp()
     {
-        LTPrint("open lamp");
+        // LTPrint("open lamp");
         _isOpen = true;
         OpenDoor();
 
@@ -172,6 +179,7 @@ public class LAMP : OWItem
         {
             PlaySiphonCaptureSFX();
             Locator.GetFlashlight().TurnOff();
+            _succTimer.StartFade(0, 0, lampCaptureTimeLimitSeconds);
         }
         else
         {
@@ -181,7 +189,7 @@ public class LAMP : OWItem
 
     private void CaptureLights()
     {
-        LTPrint("capture lights");
+        // LTPrint("capture lights");
         var detectedLights = _triggerVolume
             .getTrackedObjects()
             .Where(obj => 
@@ -193,21 +201,23 @@ public class LAMP : OWItem
             .AsList();
 
         detectedLights
-            .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))
+            .ForEach(light => light.SetScale(0, lightsFadeDurationSeconds))
             .ForEach(light => _capturedLights[light.gameObject.GetInstanceID()] = light);
-        _lightController.SetScale(1, LampFadeDurationSeconds);
+        
+        if (_lightController.GetScale() == 0 && detectedLights.IsNotEmpty())
+            _lightController.SetScale(1, lampFadeDurationSeconds);
     }
 
     private void ReleaseLights()
     {
-        LTPrint("release lights");
+        // LTPrint("release lights");
         _isReleasing = true;
         
         PlaySiphonReleaseSFX();
         
-        _capturedLights.ForEach(light => light.Value.SetScale(1, LightsFadeDurationSeconds));
+        _capturedLights.ForEach(light => light.Value.SetScale(1, lightsFadeDurationSeconds));
         _capturedLights.Clear();
-        _lightController.SetScale(0, LampFadeDurationSeconds);
+        _lightController.SetScale(0, lampFadeDurationSeconds);
     }
 
     public void UpdateSignalState(bool enabled)
@@ -219,7 +229,7 @@ public class LAMP : OWItem
     {
         if (_capturedLights.IsEmpty())
         {
-            _lightController.SetScale(0, LampFadeDurationSeconds);
+            _lightController.SetScale(0, lampFadeDurationSeconds);
         }
     }
 
@@ -239,7 +249,7 @@ public class LAMP : OWItem
         {
             foreach (var col in results)
             {
-                LTPrint(col.gameObject.name);
+                // LTPrint(col.gameObject.name);
                 if (col.gameObject.TryGetComponent(out ItemDetector detector))
                 {
                     _currentDetectors.Add(detector);

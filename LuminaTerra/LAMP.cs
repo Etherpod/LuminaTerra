@@ -27,6 +27,8 @@ public class LAMP : OWItem
     [SerializeField] private float lightsFadeDurationSeconds = 1;
     [SerializeField] private float lampFadeDurationSeconds = 2;
     [SerializeField] private float lampCaptureTimeLimitSeconds = 8;
+    [SerializeField] private ParticleSystem captureParticleSystem = null;
+    [SerializeField] private ParticleSystem releaseParticleSystem = null;
 
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
@@ -34,11 +36,11 @@ public class LAMP : OWItem
 
     private readonly IDictionary<int, CapturableLight> _capturedLights = new Dictionary<int, CapturableLight>(8);
     private readonly List<ItemDetector> _currentDetectors = [];
+    private readonly Fader _succTimer = new Fader();
     
     private float _originalLightVolumeShapeScale;
     private bool _isOpen = false;
     private bool _isReleasing = false;
-    private Fader _succTimer = new Fader();
 
     public override string GetDisplayName() => "Lantern";
 
@@ -180,6 +182,10 @@ public class LAMP : OWItem
             PlaySiphonCaptureSFX();
             Locator.GetFlashlight().TurnOff();
             _succTimer.StartFade(0, 0, lampCaptureTimeLimitSeconds);
+            
+            releaseParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            captureParticleSystem.time = 0;
+            captureParticleSystem.Play();
         }
         else
         {
@@ -214,6 +220,10 @@ public class LAMP : OWItem
         _isReleasing = true;
         
         PlaySiphonReleaseSFX();
+        
+        captureParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        releaseParticleSystem.time = 0;
+        releaseParticleSystem.Play();
         
         _capturedLights.ForEach(light => light.Value.SetScale(1, lightsFadeDurationSeconds));
         _capturedLights.Clear();

@@ -8,9 +8,11 @@ namespace LuminaTerra;
 
 public class CapturableLight : MonoBehaviour
 {
-    public delegate void ScaleChangeComplete();
+    public delegate void ScaleChangeComplete(CapturableLight affectedLight, float finalScale);
+    public delegate void CaptureComplete(CapturableLight capturedLight);
 
     public event ScaleChangeComplete OnScaleChangeComplete;
+    public event CaptureComplete OnCaptureComplete;
         
     [SerializeField, Range(0, 1)] private float initialLightScale = 1f;
         
@@ -20,6 +22,8 @@ public class CapturableLight : MonoBehaviour
     private EmissiveMaterialRenderer[] _emissives = [];
 
     private float _scale = 0f;
+
+    public bool IsBeingCaptured => _fader.TargetValue == 0;
 
     private void Awake()
     {
@@ -35,6 +39,8 @@ public class CapturableLight : MonoBehaviour
         enabled = false;
     }
 
+    public float GetScale() => _scale;
+
     public void SetScale(float newScale, float fadeDurationSeconds = 0f)
     {
         _fader.StartFade(_scale, newScale, fadeDurationSeconds);
@@ -49,7 +55,11 @@ public class CapturableLight : MonoBehaviour
         if (!_fader.IsFading)
         {
             enabled = false;
-            OnScaleChangeComplete?.Invoke();
+            if (_scale == 0)
+            {
+                OnCaptureComplete?.Invoke(this);
+            }
+            OnScaleChangeComplete?.Invoke(this, _scale);
         }
     }
 

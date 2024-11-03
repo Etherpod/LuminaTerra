@@ -18,6 +18,10 @@ public class Fader
     }
 
     public bool IsFading => Time.time < _fadeEndTime;
+    public float StartTime => _fadeStartTime;
+    public float EndTime => _fadeEndTime;
+    public float StartValue => _fadeStartValue;
+    public float TargetValue => _fadeTargetValue;
 
     public float Value
     {

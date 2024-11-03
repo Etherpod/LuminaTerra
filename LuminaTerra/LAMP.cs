@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DitzyExtensions.Collection;
+using OWML.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem.Interactions;
 using static LuminaTerra.Util.Extensions;
@@ -13,9 +14,10 @@ public class LAMP : OWItem
     private static readonly int AnimStateClosed = Animator.StringToHash("closed");
     private static readonly int AnimBoolOpen = Animator.StringToHash("open");
     private static readonly float LightsFadeDurationSeconds = 1;
-    private static readonly float LAMPFadeDurationSeconds = 2;
+    private static readonly float LampFadeDurationSeconds = 2;
+    private static readonly float LampCaptureTimeLimitSeconds = 5;
 
-    public static ItemType LAMPType = (ItemType)(10 << 1);
+    public static ItemType LampType = EnumUtils.Create<ItemType>("LTLamp");
 
     [SerializeField] private SphereShape _lightVolumeShape = null;
     [SerializeField] private OWAudioSource doorAudioSource = null;
@@ -30,24 +32,28 @@ public class LAMP : OWItem
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
 
-    private IList<CapturableLight> _capturedLights = new List<CapturableLight>(8);
-    private List<ItemDetector> _currentDetectors = [];
-    private bool _close = false;
+    private readonly IDictionary<int, CapturableLight> _capturedLights = new Dictionary<int, CapturableLight>(8);
+    private readonly List<ItemDetector> _currentDetectors = [];
     private float _originalLightVolumeShapeScale;
+    private bool _isOpen = false;
+    private bool _isReleasing = false;
 
     public override string GetDisplayName() => "Lantern";
 
-    // public bool IsOpen => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateOpened;
+    public bool IsDoorClosed => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateClosed;
+    public bool IsDoorOpened => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateOpened;
+    public bool IsDoorInMotion => IsDoorClosed || IsDoorOpened;
 
     public override void Awake()
     {
         _animator = GetComponent<Animator>();
         _triggerVolume = GetComponentInChildren<OWTriggerVolume>();
         _lightController = GetComponent<CapturableLight>();
-        _type = LAMPType;
+        _type = LampType;
         _originalLightVolumeShapeScale = _lightVolumeShape.radius;
 
         _lightController.OnScaleChangeComplete += LAMPScaleChangeComplete;
+        _triggerVolume.OnExit += ObjectExitedLampRange;
 
         base.Awake();
     }
@@ -55,18 +61,33 @@ public class LAMP : OWItem
     private void Start()
     {
         signalParent.SetActive(false);
+        enabled = false;
     }
 
     public override void OnDestroy()
     {
         _lightController.OnScaleChangeComplete -= LAMPScaleChangeComplete;
+        _triggerVolume.OnExit -= ObjectExitedLampRange;
 
         base.OnDestroy();
     }
 
-    private void LAMPScaleChangeComplete()
+    private void LAMPScaleChangeComplete(CapturableLight affectedLight, float finalScale)
     {
-        if (_animator.GetBool(AnimBoolOpen)) CloseLamp();
+        if (finalScale == 0 && IsDoorOpened) CloseLamp();
+    }
+
+    private void ObjectExitedLampRange(GameObject trackedObj)
+    {
+        if (!_isOpen) return;
+        if (!_capturedLights.TryGetValue(trackedObj.GetInstanceID(), out var capturedLight)) return;
+        if (capturedLight.GetScale() == 0) return;
+        
+        LTPrint($"[{trackedObj.name}] out of range");
+        capturedLight.SetScale(1, LightsFadeDurationSeconds);
+        _capturedLights.Remove(trackedObj.GetInstanceID());
+
+        UpdateLampLight();
     }
 
     public void PlayDoorOpenSFX() => doorAudioSource.PlayOneShot(doorOpenClip);
@@ -77,49 +98,80 @@ public class LAMP : OWItem
     {
         siphonAudioSource.Stop();
         siphonAudioSource.clip = siphonCaptureClip;
-        siphonAudioSource.FadeIn(0.5f, true);
+        siphonAudioSource.FadeIn(0.5f);
     }
 
     public void PlaySiphonReleaseSFX()
     {
         siphonAudioSource.Stop();
         siphonAudioSource.clip = siphonReleaseClip;
-        siphonAudioSource.FadeIn(0.5f, true);
+        siphonAudioSource.FadeIn(0.5f);
+    }
+
+    public void OnDoorClosed()
+    {
+        _isOpen = false;
+        _isReleasing = false;
+        PlayDoorCloseSFX();
+    }
+
+    public void OnDoorOpened()
+    {
+        _isOpen = true;
+        PlayDoorOpenSFX();
     }
 
     private void FixedUpdate()
     {
-        if (_close)
-        {
-            CloseLamp();
-            _close = false;
-        }
-
         if (!Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Item)) return;
-        if (!OWInput.IsNewlyPressed(InputLibrary.toolActionSecondary, InputMode.Character)) return;
-        var animatorState = _animator.GetCurrentAnimatorStateInfo(0);
-        if (animatorState.shortNameHash != AnimStateClosed && animatorState.shortNameHash != AnimStateOpened) return;
-
-        OpenLamp();
+        if (!OWInput.IsPressed(InputLibrary.toolActionSecondary, InputMode.Character))
+        {
+            if (!_isReleasing && _isOpen && IsDoorOpened) CloseLamp();
+            return;
+        }
+        
+        if (!_isOpen && IsDoorClosed) OpenLamp();
+        if (_isOpen && !_isReleasing) CaptureLights();
     }
+
+    private void CloseDoor() => _animator.SetBool(AnimBoolOpen, false);
+    
+    private void OpenDoor() => _animator.SetBool(AnimBoolOpen, true);
 
     private void CloseLamp()
     {
-        // LTPrint("close");
-        _animator.SetBool(AnimBoolOpen, false);
+        LTPrint("close lamp");
+        _isOpen = false;
+        CloseDoor();
+        
         if (siphonAudioSource.isPlaying && !siphonAudioSource.IsFadingOut())
         {
             siphonAudioSource.FadeOut(1);
         }
+
+        _capturedLights
+            .Values
+            .AsList()
+            .Where(light => light.IsBeingCaptured && light.GetScale() != 0)
+            .ForEach(light =>
+            {
+                light.SetScale(1, LightsFadeDurationSeconds);
+                _capturedLights.Remove(light.gameObject.GetInstanceID());
+            });
+
+        UpdateLampLight();
     }
 
     private void OpenLamp()
     {
-        _animator.SetBool(AnimBoolOpen, true);
+        LTPrint("open lamp");
+        _isOpen = true;
+        OpenDoor();
 
         if (_capturedLights.IsEmpty())
         {
-            CaptureLights();
+            PlaySiphonCaptureSFX();
+            Locator.GetFlashlight().TurnOff();
         }
         else
         {
@@ -129,40 +181,46 @@ public class LAMP : OWItem
 
     private void CaptureLights()
     {
-        // LTPrint("capture");
+        LTPrint("capture lights");
         var detectedLights = _triggerVolume
             .getTrackedObjects()
+            .Where(obj => 
+                !_capturedLights.ContainsKey(obj.GetInstanceID())
+                || !_capturedLights[obj.GetInstanceID()].IsBeingCaptured
+            )
             .Select(obj => obj.GetComponent<CapturableLight>())
             .Where(light => light)
             .AsList();
 
-        if (detectedLights.IsEmpty())
-        {
-            _close = true;
-            return;
-        }
-        
-        PlaySiphonCaptureSFX();
-        Locator.GetFlashlight().TurnOff();
-
         detectedLights
             .ForEach(light => light.SetScale(0, LightsFadeDurationSeconds))
-            .ForEach(light => _capturedLights.Add(light));
-        _lightController.SetScale(1, LAMPFadeDurationSeconds);
+            .ForEach(light => _capturedLights[light.gameObject.GetInstanceID()] = light);
+        _lightController.SetScale(1, LampFadeDurationSeconds);
     }
 
     private void ReleaseLights()
     {
-        // LTPrint("release");
+        LTPrint("release lights");
+        _isReleasing = true;
+        
         PlaySiphonReleaseSFX();
-        _capturedLights.ForEach(light => light.SetScale(1, LightsFadeDurationSeconds));
+        
+        _capturedLights.ForEach(light => light.Value.SetScale(1, LightsFadeDurationSeconds));
         _capturedLights.Clear();
-        _lightController.SetScale(0, LAMPFadeDurationSeconds);
+        _lightController.SetScale(0, LampFadeDurationSeconds);
     }
 
     public void UpdateSignalState(bool enabled)
     {
         signalParent.SetActive(enabled);
+    }
+
+    private void UpdateLampLight()
+    {
+        if (_capturedLights.IsEmpty())
+        {
+            _lightController.SetScale(0, LampFadeDurationSeconds);
+        }
     }
 
     public override void DropItem(
@@ -172,7 +230,10 @@ public class LAMP : OWItem
         Sector sector,
         IItemDropTarget customDropTarget)
     {
+        enabled = true;
+        
         base.DropItem(position, normal, parent, sector, customDropTarget);
+        
         Collider[] results = Physics.OverlapSphere(transform.position + transform.up * 0.15f, 0.2f);
         if (results.Length > 0)
         {
@@ -192,6 +253,8 @@ public class LAMP : OWItem
 
     public override void PickUpItem(Transform holdTranform)
     {
+        enabled = true;
+        
         base.PickUpItem(holdTranform);
 
         foreach (ItemDetector detector in _currentDetectors)

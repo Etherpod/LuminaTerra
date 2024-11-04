@@ -64,12 +64,7 @@
 
     <ExploreFact>
       <ID>LT_VISION_REALM_BRIDGE</ID>
-      <Text>I found a long bridge spanning across the void. At the end of the bridge I saw a glowing door.</Text>
-    </ExploreFact>
-
-    <ExploreFact>
-      <ID>LT_VISION_REALM_TRANSPORTATION</ID>
-      <Text>When I placed the lantern on the strange table with the three crystals, it appeared in the void with me.</Text>
+      <Text>I found the beginning of a bridge leading to a door in the distance. The bridge fades away into the darkness before reaching the other side.</Text>
     </ExploreFact>
   </Entry>
 

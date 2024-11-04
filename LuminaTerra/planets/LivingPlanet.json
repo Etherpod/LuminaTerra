@@ -174,5 +174,8 @@
   "ShipLog": {
     "xmlFile": "planets/shiplog/ShipLog.xml",
     "spriteFolder": "planets/shiplog/images"
+  },
+  "MapMarker": {
+    "enabled": true
   }
 }

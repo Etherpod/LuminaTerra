@@ -22,5 +22,8 @@
       "g": 189,
       "b": 175
     }
+  },
+  "MapMarker": {
+    "enabled": true
   }
 }

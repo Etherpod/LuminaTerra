@@ -19,6 +19,7 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private OWAudioSource windAudio = null;
     [SerializeField] private CylinderShape transferArea = null;
     [SerializeField] private Material sunMaterial = null;
+    [SerializeField] private SunCapturableLight sunLight = null;
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
     [SerializeField] private Transform heartTransform = null;
@@ -27,7 +28,9 @@ public class EndOfLoopController : MonoBehaviour
     private Animator _sunAnimator;
     private Conductor _conductor;
     private OWAudioSource[] _planetAmbienceVolumes;
+    private OWLight2 _sunLightSource;
     private float _lastMusicTime;
+    private bool _lastCapturingState = false;
 
     public static bool EnteredSequence = false;
 
@@ -35,6 +38,7 @@ public class EndOfLoopController : MonoBehaviour
     {
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
         _sunAnimator = gameObject.GetComponent<Animator>();
+        _sunLightSource = GetComponentInChildren<OWLight2>();
         LuminaTerra.Instance.NewHorizons.GetBodyLoadedEvent().AddListener(OnPlanetLoad);
         GlobalMessenger.AddListener("GamePaused", OnGamePaused);
         GlobalMessenger.AddListener("GameUnpaused", OnGameUnpaused);
@@ -68,7 +72,24 @@ public class EndOfLoopController : MonoBehaviour
 
     private void Update()
     {
-        sunMaterial.SetFloat(PropColorTime, sunDeathProgress);
+        if (_lastCapturingState != sunLight.IsBeingCaptured)
+        {
+            _lastCapturingState = sunLight.IsBeingCaptured;
+            if (!sunLight.IsBeingCaptured)
+            {
+                OnStopSunCapture();
+            }
+            else
+            {
+                OnStartSunCapture();
+            }
+        }
+
+        if (!sunLight.IsBeingCaptured)
+        {
+            sunMaterial.SetFloat(PropColorTime, sunDeathProgress);
+            _sunLightSource.SetIntensityScale(1 - sunDeathProgress);
+        }
 
         float num = Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time);
         _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, num);
@@ -146,6 +167,16 @@ public class EndOfLoopController : MonoBehaviour
         Locator.GetDeathManager().KillPlayer(DeathType.TimeLoop);
         Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_DEATH");
         enabled = false;
+    }
+
+    public void OnStartSunCapture()
+    {
+        _sunAnimator.StopPlayback();
+    }
+
+    public void OnStopSunCapture()
+    {
+        _sunAnimator.StartPlayback();
     }
 
     public float GetDistSqrFromHeart(Vector3 point)

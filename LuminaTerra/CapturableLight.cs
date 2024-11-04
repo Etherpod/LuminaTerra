@@ -16,12 +16,13 @@ public class CapturableLight : MonoBehaviour
         
     [SerializeField, Range(0, 1)] private float initialLightScale = 1f;
         
-    private readonly Fader _fader = new Fader();
+    protected readonly Fader _fader = new Fader();
     
     private OWLight2[] _lights = [];
     private EmissiveMaterialRenderer[] _emissives = [];
 
-    private float _scale = 0f;
+    protected float _scale = 0f;
+    protected virtual float FadeDurationMultiplier => 1f;
 
     public bool IsBeingCaptured => _fader.TargetValue == 0;
 
@@ -43,7 +44,7 @@ public class CapturableLight : MonoBehaviour
 
     public void SetScale(float newScale, float fadeDurationSeconds = 0f)
     {
-        _fader.StartFade(_scale, newScale, fadeDurationSeconds);
+        _fader.StartFade(_scale, newScale, fadeDurationSeconds * FadeDurationMultiplier);
         enabled = true;
     }
 
@@ -63,7 +64,7 @@ public class CapturableLight : MonoBehaviour
         }
     }
 
-    private void UpdateScale()
+    protected virtual void UpdateScale()
     {
         _lights.ForEach(light => light.SetIntensityScale(_scale));
         _emissives.ForEach(emissive => emissive.SetEmissionScale(_scale));

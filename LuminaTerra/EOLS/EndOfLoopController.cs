@@ -91,16 +91,20 @@ public class EndOfLoopController : MonoBehaviour
         }
 
         float num = Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time);
-        _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, num);
-        _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, num);
-        _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = Mathf.Lerp(0f, 0.6f, num);
-
-        if (num >= 0.99)
+        if (sunLight.GetScale() > 0 && !sunLight.IsBeingCaptured)
         {
-            _lastMusicTime = -1;
-            EndEOLS();
+            _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, num);
+            _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, num);
+            _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = Mathf.Lerp(0f, 0.6f, num);
+
+            if (num >= 0.99)
+            {
+                _lastMusicTime = -1;
+                EndEOLS();
+            }
         }
-        else if (!windAudio.isPlaying && num > 0)
+
+        if (!windAudio.isPlaying && num > 0)
         {
             windAudio.FadeIn(15f, true, true);
         }

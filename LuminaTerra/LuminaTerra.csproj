@@ -16,10 +16,15 @@
   <ItemGroup Label="user configs">
     <Content Include="LuminaTerra.csproj.user" />
   </ItemGroup>
+
+  <ItemGroup>
+    <DialogueItems Include="planets\dialogue\*.*" />
+  </ItemGroup>
   
   <Target Name="CopyDLLs" AfterTargets="Build" Condition=" '$(Configuration)' == 'ForUnity' And '$(UnityProjectDirectory)' != '' ">
     <Message Text="Copying DLL to Unity project" Importance="High" />
     <Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="$(UnityProjectDirectory)/Assets/Dlls" />
+    <Copy SourceFiles="@(DialogueItems)" DestinationFolder="$(UnityProjectDirectory)/Assets/LuminaTerra/Dialogue" />
     <Message Text="Copy complete" Importance="High" />
   </Target>
   

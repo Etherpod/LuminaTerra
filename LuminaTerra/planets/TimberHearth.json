@@ -1,0 +1,28 @@
+{
+  "name": "Timber Hearth",
+  "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
+
+  "Props": {
+    "details": [
+      {
+        "assetBundle": "planets/assets/luminaterra",
+        "path": "Assets/LuminaTerra/LaunchTowerNote.prefab",
+        "position": {
+          "x": 10.96812,
+          "y": -40.56169,
+          "z": 187.8776
+        },
+        "rotation": {
+          "x": 343.4935,
+          "y": 158.3537,
+          "z": 130.5412
+        },
+        "normal": {
+          "x": 0.7744709,
+          "y": -0.6232066,
+          "z": 0.1086675
+        }
+      }
+    ]
+  }
+}

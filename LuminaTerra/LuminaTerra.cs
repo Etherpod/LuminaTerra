@@ -17,6 +17,8 @@ namespace LuminaTerra
         public delegate void SignalLearnEvent();
         public event SignalLearnEvent OnLearnHeartSignal;
 
+        public bool InCorrectSystem => NewHorizons.GetCurrentStarSystem() == "Hornfel's Discovery";
+
         public void Awake()
         {
             Instance = this;
@@ -73,7 +75,7 @@ namespace LuminaTerra
         [HarmonyPatch(typeof(Campfire), nameof(Campfire.CanSleepHereNow))]
         public static void PreventSleepingDuringEOLS(ref bool __result)
         {
-            if (Object.FindObjectOfType<Conductor>().InEndSequence)
+            if (LuminaTerra.Instance.InCorrectSystem && Object.FindObjectOfType<Conductor>().InEndSequence)
             {
                 __result = false;
             }
@@ -83,7 +85,7 @@ namespace LuminaTerra
         [HarmonyPatch(typeof(Campfire), nameof(Campfire.ShouldWakeUp))]
         public static void WakeUpBeforeEOLS(ref bool __result)
         {
-            if (Object.FindObjectOfType<Conductor>().InEndSequence)
+            if (LuminaTerra.Instance.InCorrectSystem && Object.FindObjectOfType<Conductor>().InEndSequence)
             {
                 __result = true;
             }

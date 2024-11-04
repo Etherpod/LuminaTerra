@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
-  "starSystem": "LT_System",
+  "starSystem": "Hornfel's Discovery",
   "name": "Enduring Flame",
   "canShowOnTitle": false,
   "Base": {
@@ -25,5 +25,10 @@
   },
   "MapMarker": {
     "enabled": true
+  },
+  "ShipLog": {
+    "mapMode": {
+      "remove": true
+    }
   }
 }

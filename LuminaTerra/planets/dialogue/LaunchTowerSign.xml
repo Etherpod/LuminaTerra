@@ -1,0 +1,17 @@
+<DialogueTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/dialogue_schema.xsd">
+  <NameField>SIGN</NameField>
+
+  <DialogueNode>
+    <Name>Sign_Start</Name>
+    <EntryCondition>DEFAULT</EntryCondition>
+    <Dialogue>
+      <Page>Hey, Hatchling! I made a weird discovery the other day that I thought you might be interested in.</Page>
+      <Page>When I was tuning my deep space radio, I picked up a strange signal from a nearby star system. It's unlike anything I've ever heard before from space!</Page>
+      <Page>Since your ship is equipped with that new "warp drive" technology now, I thought you might want to go check it out. I'm certainly curious about what's there.</Page>
+      <Page>Whether you decide to go or not, I've sent the coordinates of the star system to your ship computer.</Page>
+      <Page>Safe travels!</Page>
+      <Page>- Hornfels</Page>
+    </Dialogue>
+  </DialogueNode>
+</DialogueTree>

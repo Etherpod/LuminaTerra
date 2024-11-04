@@ -1,11 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/star_system_schema.json",
-  "loopDuration": 22,
   "enableTimeLoop": false,
-  "startHere": true,
+  "startHere": false,
   "respawnHere": true,
   "canEnterViaWarpDrive": true,
   "canExitViaWarpDrive": true,
+  "name": "Hornfel's Discovery",
   "curiosities": [
     {
       "id": "LT_RITUAL_CHAMBER",

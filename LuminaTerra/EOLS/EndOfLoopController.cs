@@ -171,6 +171,8 @@ public class EndOfLoopController : MonoBehaviour
 
     private void OnGameUnpaused()
     {
+        if (!EnteredSequence) return;
+
         if (_lastMusicTime >= 0f)
         {
             ambientSound.time = _lastMusicTime;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using DitzyExtensions.Collection;
+using LuminaTerra.EOLS;
 using UnityEngine;
-using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
 
@@ -23,6 +21,7 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
     [SerializeField] private Transform heartTransform = null;
+    [SerializeField] private EOLSGroundController bridgeGroundController = null;
     
     private PlayerCameraEffectController _playerCameraEffectController;
     private Animator _sunAnimator;
@@ -129,6 +128,12 @@ public class EndOfLoopController : MonoBehaviour
 
             objTransform.gameObject.GetComponents<SectoredMonoBehaviour>()?.ForEach(smb => smb.SetSector(sector));
         });
+
+        var lamp = GetComponentInChildren<LAMP>();
+        if (lamp)
+        {
+            bridgeGroundController.SetLamp(lamp.transform);
+        }
         
         stars.Simulate(22f);
         stars.Play();

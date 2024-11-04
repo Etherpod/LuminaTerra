@@ -8,6 +8,8 @@ namespace LuminaTerra;
 
 public class MysteriousDoorController : MonoBehaviour
 {
+    private static readonly int StarGlow = Shader.PropertyToID("_StarGlow");
+    
     [SerializeField] private InteractReceiver _interactReceiver = null;
     [SerializeField] private OWAudioSource _loopingAudio = null;
     [SerializeField] private OWAudioSource _oneShotAudio = null;
@@ -18,7 +20,6 @@ public class MysteriousDoorController : MonoBehaviour
 
     private Animator _animator;
     private PlayerLockOnTargeting _lockOnTargeting;
-    private readonly string StarGlowPropID = "_StarGlow";
     private Fader _fader = new();
 
     private void Awake()
@@ -37,7 +38,7 @@ public class MysteriousDoorController : MonoBehaviour
 
     private void Update()
     {
-        _doorRenderer.material.SetFloat(StarGlowPropID, _fader.Value);
+        _doorRenderer.material.SetFloat(StarGlow, _fader.Value);
 
         if (!_fader.IsFading)
         {
@@ -61,7 +62,7 @@ public class MysteriousDoorController : MonoBehaviour
         _nextRoomParent.SetActive(true);
         _oneShotAudio.pitch = 0.8f;
         _oneShotAudio.PlayOneShot(AudioType.Door_OpenStart);
-        _fader.StartFade(_doorRenderer.material.GetFloat(StarGlowPropID), 0f, 3f);
+        _fader.StartFade(_doorRenderer.material.GetFloat("_StarGlow"), 0f, 3f);
         enabled = true;
     }
 

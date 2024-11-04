@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using DitzyExtensions.Collection;
 using LuminaTerra.Util;
@@ -41,6 +42,7 @@ public class LAMP : OWItem
     private float _originalLightVolumeShapeScale;
     private bool _isOpen = false;
     private bool _isReleasing = false;
+    private bool _firstPlayerInput = true;
 
     public override string GetDisplayName() => "Lantern";
 
@@ -66,6 +68,7 @@ public class LAMP : OWItem
     {
         signalParent.SetActive(false);
         enabled = false;
+        LuminaTerra.Instance.ModHelper.Events.Unity.RunWhen(() => captureParticleSystem.isEmitting, captureParticleSystem.Stop);
     }
 
     public override void OnDestroy()
@@ -130,16 +133,26 @@ public class LAMP : OWItem
         if (!Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Item)) return;
         if (!OWInput.IsPressed(InputLibrary.toolActionSecondary, InputMode.Character))
         {
+            _firstPlayerInput = true;
             if (!_isReleasing && _isOpen && IsDoorOpened) CloseLamp();
             return;
         }
-        
-        if (!_isOpen && IsDoorClosed) OpenLamp();
+
+        if (_firstPlayerInput && !_isOpen && IsDoorClosed)
+        {
+            _firstPlayerInput = false;
+            OpenLamp();
+        }
         if (_isOpen && !_isReleasing)
         {
-            CaptureLights();
             if (!_succTimer.IsFading)
+            {
                 CloseLamp();
+            }
+            else
+            {
+                CaptureLights();
+            }
         }
     }
 
@@ -149,14 +162,16 @@ public class LAMP : OWItem
 
     private void CloseLamp()
     {
-        // LTPrint("close lamp");
-        _isOpen = false;
+        LTPrint("close lamp");
+        //_isOpen = false;
         CloseDoor();
         
         if (siphonAudioSource.isPlaying && !siphonAudioSource.IsFadingOut())
         {
             siphonAudioSource.FadeOut(1);
         }
+
+        captureParticleSystem.Stop();
 
         _capturedLights
             .Values
@@ -173,19 +188,22 @@ public class LAMP : OWItem
 
     private void OpenLamp()
     {
-        // LTPrint("open lamp");
-        _isOpen = true;
+        LTPrint("open lamp");
+        //_isOpen = true;
         OpenDoor();
 
         if (_capturedLights.IsEmpty())
         {
-            PlaySiphonCaptureSFX();
-            Locator.GetFlashlight().TurnOff();
-            _succTimer.StartFade(0, 0, lampCaptureTimeLimitSeconds);
-            
-            releaseParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            captureParticleSystem.time = 0;
-            captureParticleSystem.Play();
+            if (GetDetectedLights().Length > 0)
+            {
+                PlaySiphonCaptureSFX();
+                Locator.GetFlashlight().TurnOff();
+                _succTimer.StartFade(0, 0, lampCaptureTimeLimitSeconds);
+
+                //releaseParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                //captureParticleSystem.time = 0;
+                captureParticleSystem.Play();
+            }
         }
         else
         {
@@ -196,7 +214,7 @@ public class LAMP : OWItem
     private void CaptureLights()
     {
         // LTPrint("capture lights");
-        var detectedLights = _triggerVolume
+        /*var detectedLights = _triggerVolume
             .getTrackedObjects()
             .Where(obj => 
                 !_capturedLights.ContainsKey(obj.GetInstanceID())
@@ -204,7 +222,9 @@ public class LAMP : OWItem
             )
             .Select(obj => obj.GetComponent<CapturableLight>())
             .Where(light => light)
-            .AsList();
+            .AsList();*/
+
+        var detectedLights = GetDetectedLights();
 
         detectedLights
             .ForEach(light => light.SetScale(0, lightsFadeDurationSeconds))
@@ -216,18 +236,43 @@ public class LAMP : OWItem
 
     private void ReleaseLights()
     {
-        // LTPrint("release lights");
+        LTPrint("release lights");
         _isReleasing = true;
-        
+
+        captureParticleSystem.Stop();
+        //releaseParticleSystem.time = 0;
         PlaySiphonReleaseSFX();
-        
-        captureParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        releaseParticleSystem.time = 0;
         releaseParticleSystem.Play();
-        
+
         _capturedLights.ForEach(light => light.Value.SetScale(1, lightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, lampFadeDurationSeconds);
+    }
+
+    public void ForceReleaseLights()
+    {
+        if (_capturedLights.IsEmpty())
+        {
+            return;
+        }
+
+        captureParticleSystem.Stop();
+        _capturedLights.ForEach(light => light.Value.SetScale(1, lightsFadeDurationSeconds));
+        _capturedLights.Clear();
+        _lightController.SetScale(0, lampFadeDurationSeconds);
+    }
+
+    private CapturableLight[] GetDetectedLights()
+    {
+        return _triggerVolume
+            .getTrackedObjects()
+            .Where(obj =>
+                !_capturedLights.ContainsKey(obj.GetInstanceID())
+                || !_capturedLights[obj.GetInstanceID()].IsBeingCaptured
+            )
+            .Select(obj => obj.GetComponent<CapturableLight>())
+            .Where(light => light)
+            .AsList().ToArray();
     }
 
     public void UpdateSignalState(bool enabled)
@@ -250,7 +295,7 @@ public class LAMP : OWItem
         Sector sector,
         IItemDropTarget customDropTarget)
     {
-        enabled = true;
+        enabled = false;
         
         base.DropItem(position, normal, parent, sector, customDropTarget);
         
@@ -273,6 +318,7 @@ public class LAMP : OWItem
 
     public override void PickUpItem(Transform holdTranform)
     {
+        _firstPlayerInput = true;
         enabled = true;
         
         base.PickUpItem(holdTranform);

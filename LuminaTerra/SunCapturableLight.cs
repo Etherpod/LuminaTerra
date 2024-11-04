@@ -4,7 +4,7 @@ namespace LuminaTerra;
 
 public class SunCapturableLight : CapturableLight
 {
-    [SerializeField] private TessellatedSphereRenderer _sunRenderer;
+    [SerializeField] private TessellatedSphereRenderer _sunRenderer = null;
 
     private readonly int SunColorPropID = Shader.PropertyToID("_ColorTime");
 

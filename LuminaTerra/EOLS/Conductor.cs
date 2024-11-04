@@ -63,6 +63,7 @@ public class Conductor : MonoBehaviour
         yield return new WaitUntil(() => musicSource.time >= 29f);
 
         FindObjectOfType<PlayerCameraEffectController>().CloseEyes(3f);
+        FindObjectOfType<LAMP>().ForceReleaseLights();
 
         yield return new WaitUntil(() => musicSource.time >= 32f);
 

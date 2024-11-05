@@ -34,6 +34,7 @@ public class LAMP : OWItem
     private Animator _animator;
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
+    private ScreenPrompt _suckPrompt;
 
     private readonly IDictionary<int, CapturableLight> _capturedLights = new Dictionary<int, CapturableLight>(8);
     private readonly List<ItemDetector> _currentDetectors = [];
@@ -69,6 +70,8 @@ public class LAMP : OWItem
     {
         signalParent.SetActive(false);
         enabled = false;
+        _suckPrompt = new ScreenPrompt(InputLibrary.toolActionSecondary, "<CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt)
+            + "   " + "Open Lantern", 0, ScreenPrompt.DisplayState.Normal, false);
         LuminaTerra.Instance.ModHelper.Events.Unity.RunWhen(() => captureParticleSystem.isEmitting, captureParticleSystem.Stop);
     }
 
@@ -257,7 +260,7 @@ public class LAMP : OWItem
             return;
         }
 
-        captureParticleSystem.Stop();
+        captureParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _capturedLights.ForEach(light => light.Value.SetScale(1, lightsFadeDurationSeconds));
         _capturedLights.Clear();
         _lightController.SetScale(0, lampFadeDurationSeconds);
@@ -315,6 +318,8 @@ public class LAMP : OWItem
         }
 
         _lightVolumeShape.radius = _originalLightVolumeShapeScale;
+
+        Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
     }
 
     public override void PickUpItem(Transform holdTranform)
@@ -332,5 +337,7 @@ public class LAMP : OWItem
         _currentDetectors.Clear();
 
         _lightVolumeShape.radius = _originalLightVolumeShapeScale / holdTranform.localScale.x;
+
+        Locator.GetPromptManager().AddScreenPrompt(_suckPrompt, PromptPosition.UpperRight, true);
     }
 }

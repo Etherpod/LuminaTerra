@@ -140,7 +140,7 @@ public class EndOfLoopController : MonoBehaviour
     public void StartEOLS()
     {
         gameObject.SetActive(true);
-        
+
         ItemTool itemTool = Locator.GetPlayerCamera().GetComponentInChildren<ItemTool>();
         if (itemTool.GetHeldItem() != null)
         {
@@ -208,6 +208,7 @@ public class EndOfLoopController : MonoBehaviour
 
         EnteredSequence = true;
         Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_ENTER");
+        Locator.GetShipLogManager().RevealFact("LT_VISION_REALM_BRIDGE");
 
         _playerCameraEffectController._owCamera.postProcessingSettings.vignetteEnabled = true;
         _playerCameraEffectController._owCamera.postProcessingSettings.vignette.color = Color.black;

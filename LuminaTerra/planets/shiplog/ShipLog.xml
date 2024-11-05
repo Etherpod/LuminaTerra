@@ -6,6 +6,12 @@
     <Name>Strange House</Name>
     <Curiosity>LT_RITUAL_CHAMBER</Curiosity>
 
+    <RumorFact>
+      <ID>LT_STRANGE_HOUSE_RUMOR</ID>
+      <RumorName>Strange Planet</RumorName>
+      <Text>This system only has one planet with a strange signal coming from it. The planet looks uninhabited, but maybe there's still something on it.</Text>
+    </RumorFact>
+
     <ExploreFact>
       <ID>LT_STRANGE_HOUSE_ENTER</ID>
       <Text>A lone house on the pole of the planet. There is a hole in the floor that leads to a dark cave.</Text>

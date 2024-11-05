@@ -1,0 +1,152 @@
+<DialogueTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/dialogue_schema.xsd">
+  <NameField>Ernesto</NameField>
+
+  <DialogueNode>
+    <Name>Ernesto_Start</Name>
+    <EntryCondition>DEFAULT</EntryCondition>
+    <Dialogue>
+      <Page>Yahaha, you found me! Oh, wait... wrong line...</Page>
+      <Page>Behold: Ernesto the Magic Talking Anglerfish!</Page>
+      <Page>Did you wanna ask me something? Make it quick, I'm not really supposed to be talking right now.</Page>
+    </Dialogue>
+
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>If you can't talk aren't you just Ernesto the Magic Anglerfish?</Text>
+        <DialogueTarget>Ernesto_Talk</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Did you pay your taxes?</Text>
+        <DialogueTarget>Ernesto_Taxes</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Where is Geswaldo?</Text>
+        <DialogueTarget>Ernesto_Geswaldo_0</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Talk</Name>
+    <Dialogue>
+      <Page>Huh. I guess I am. Do I have to change my identity now? I can probably-</Page>
+      <Page>Whoops, I went over my word limit. It's been nice talking, Hatchling.</Page>
+    </Dialogue>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Taxes</Name>
+    <Dialogue>
+      <Page>Uh...</Page>
+      <Page>That's gonna be it for today. I'll see you later, Hatchling.</Page>
+    </Dialogue>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Geswaldo_0</Name>
+    <Dialogue>
+      <Page>Geswaldo? I haven't heard that name in years...</Page>
+      <Page>It all began 5 years ago. I was taking a midnight stroll with Geswaldo.</Page>
+      <Page>The alleys were dark and shadowed. It was hard to see much of anything.</Page>
+    </Dialogue>
+
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Aren't you not supposed to talk or something?</Text>
+        <DialogueTarget>Ernesto_Geswaldo_End</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Go on.</Text>
+        <DialogueTarget>Ernesto_Geswaldo_1</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Geswaldo_1</Name>
+    <Dialogue>
+      <Page>I suddenly felt a strange presence. A sort of pressure, like the walls were closing in on us.</Page>
+      <Page>Geswaldo felt it too. The tight alleyways suddenly felt much more sinister.</Page>
+      <Page>We decided to turn back the way we came. It was clear we were somewhere we weren't supposed to be.</Page>
+    </Dialogue>
+
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>This feels like breaking the rules.</Text>
+        <DialogueTarget>Ernesto_Geswaldo_End</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>What happened next?</Text>
+        <DialogueTarget>Ernesto_Geswaldo_2</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Geswaldo_2</Name>
+    <Dialogue>
+      <Page>As we reteated back through the brick corridors, the darkness seemed to become more and more oppressive.</Page>
+      <Page>Panic began to enter our minds. We rounded corner after corner, searching for some escape from this endless maze.</Page>
+      <Page>Geswaldo was having trouble keeping up, but I kept running. When I glanced behind me, he was suddenly gone.</Page>
+    </Dialogue>
+
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Alright, I think that's enough talking.</Text>
+        <DialogueTarget>Ernesto_Geswaldo_End</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>What?!</Text>
+        <DialogueTarget>Ernesto_Geswaldo_3</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Geswaldo_3</Name>
+    <Dialogue>
+      <Page>I do not know what became of Geswaldo that night. But I know that in my heart there is a hole that will never be filled again.</Page>
+      <Page>Wait... I feel something. A pressure.</Page>
+      <Page>Is is time.</Page>
+    </Dialogue>
+
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Time for what?</Text>
+        <DialogueTarget>Ernesto_Death_0</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>You're not leaving, are you?</Text>
+        <DialogueTarget>Ernesto_Death_1</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Death_0</Name>
+    <Dialogue>
+      <Page>Time for me to leave this world. There are no words left for me to speak.</Page>
+      <Page>It has been nice knowing you, Hatchling. I hope to see you again in another world.</Page>
+      <Page>Farewell.</Page>
+    </Dialogue>
+    <SetPersistentCondition>LT_ERNESTO_DEATH</SetPersistentCondition>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Death_1</Name>
+    <Dialogue>
+      <Page>I am sorry, Hatchling. My words have all but been exhausted.</Page>
+      <Page>Farewell. I hope I will see you again in another world.</Page>
+    </Dialogue>
+    <SetPersistentCondition>LT_ERNESTO_DEATH</SetPersistentCondition>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Ernesto_Geswaldo_End</Name>
+    <Dialogue>
+      <Page>What? Oh, sorry. I got carried away there.</Page>
+      <Page>Anyways, I'll catch you later. I'm gonna go be silent for a while.</Page>
+    </Dialogue>
+  </DialogueNode>
+</DialogueTree>

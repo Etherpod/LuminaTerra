@@ -41,12 +41,12 @@ public class Conductor : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
+        /*if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
             LuminaTerra.Instance.ModHelper.Console.WriteLine("start");
             StartCoroutine(StartEOLS());
             startedSequence = true;
-        }
+        }*/
         if (!startedSequence && Time.timeSinceLevelLoad > loopDuration - 32f)
         {
             StartCoroutine(StartEOLS());

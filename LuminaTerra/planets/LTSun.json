@@ -25,10 +25,5 @@
   },
   "MapMarker": {
     "enabled": true
-  },
-  "ShipLog": {
-    "mapMode": {
-      "remove": true
-    }
   }
 }

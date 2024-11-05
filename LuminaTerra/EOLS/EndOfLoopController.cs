@@ -148,8 +148,8 @@ public class EndOfLoopController : MonoBehaviour
         {
             itemTool._waitForUnsocketAnimation = false;
             itemTool.DropItemInstantly(
-                GameObject.Find("/LivingPlanet_Body/Sector").GetComponent<Sector>(),
-                GameObject.Find("/LivingPlanet_Body/Sector/LivingPlanet").transform
+                GameObject.Find("/ShimmeringHeart_Body/Sector").GetComponent<Sector>(),
+                GameObject.Find("/ShimmeringHeart_Body/Sector/LivingPlanet").transform
             );
         }
         

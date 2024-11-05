@@ -43,6 +43,7 @@ public class EndOfLoopController : MonoBehaviour
 
     private void Awake()
     {
+        EnteredSequence = false;
         _playerCameraEffectController = FindObjectOfType<PlayerCameraEffectController>();
         _sunAnimator = gameObject.GetComponent<Animator>();
         _sunLightSource = GetComponentInChildren<OWLight2>();

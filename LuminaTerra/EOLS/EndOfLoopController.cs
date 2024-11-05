@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DitzyExtensions.Collection;
 using LuminaTerra.EOLS;
 using UnityEngine;
@@ -136,7 +137,8 @@ public class EndOfLoopController : MonoBehaviour
         var lamp = GetComponentInChildren<LAMP>();
         if (lamp)
         {
-            bridgeGroundController.SetLamp(lamp.transform);
+            GetComponentsInChildren<EOLSGroundController>()
+                .ForEach(gc => gc.SetLamp(lamp));
         }
         
         stars.Simulate(22f);

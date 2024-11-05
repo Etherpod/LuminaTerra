@@ -49,6 +49,7 @@ public class LAMP : OWItem
     public bool IsDoorClosed => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateClosed;
     public bool IsDoorOpened => _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == AnimStateOpened;
     public bool IsDoorInMotion => IsDoorClosed || IsDoorOpened;
+    public bool IsLit => 0.9 < _lightController.GetScale();
 
     public override void Awake()
     {

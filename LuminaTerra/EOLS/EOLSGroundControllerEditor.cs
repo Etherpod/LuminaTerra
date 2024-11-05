@@ -4,7 +4,8 @@ using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra.EOLS;
 
-public class EOLSGroundController : MonoBehaviour
+[ExecuteInEditMode]
+public class EOLSGroundControllerEditor : MonoBehaviour
 {
     private static readonly int ShaderPropEolsMInverse = Shader.PropertyToID("_EOLS_M_Inverse");
     private static readonly int ShaderPropLampM = Shader.PropertyToID("_LAMP_M");
@@ -14,7 +15,7 @@ public class EOLSGroundController : MonoBehaviour
     [SerializeField] private bool isBridge = false;
     [SerializeField] private Renderer eolsCenter = null;
     [SerializeField] private bool lampRequired = false;
-    [SerializeField] private LAMP lamp = null;
+    [SerializeField] private Transform lamp = null;
 
     private Renderer _renderer = null;
     private Renderer _lampRenderer = null;
@@ -28,33 +29,28 @@ public class EOLSGroundController : MonoBehaviour
         {
             _lampRenderer = lamp.GetComponent<Renderer>();
         }
-
-        _renderer.material.SetInt("_LampRequired", lampRequired ? 1 : 0);
-        _renderer.material.SetInt("_Shape", isBridge ? 1 : 0);
+        
+        _renderer.sharedMaterial.SetInt("_LampRequired", lampRequired ? 1 : 0);
+        _renderer.sharedMaterial.SetInt("_Shape", isBridge ? 1 : 0);
     }
 
-    public void SetLamp(LAMP lamp)
+    public void SetLamp(Transform lamp)
     {
         this.lamp = lamp;
-        _lampRenderer = lamp.GetComponent<Renderer>();
     }
 
     private void Update()
     {
-        _renderer.material.SetMatrix(ShaderPropEolsMInverse, eolsCenter.worldToLocalMatrix);
+        _renderer.sharedMaterial.SetMatrix(ShaderPropEolsMInverse, eolsCenter.worldToLocalMatrix);
 
         // var centerPos = eolsCenter.InverseTransformVector(eolsCenter.position);
         // _renderer.material.SetVector(ShaderPropEolsCenter, new Vector4(centerPos.x, centerPos.y, 0, 0));
         
-        if (lampRequired && lamp && lamp.IsLit)
+        if (lampRequired && lamp)
         {
-            // var lampPos = eolsCenter.transform.InverseTransformVector(lamp.transform.position);
+            // var lampPos = eolsCenter.transform.InverseTransformVector(lamp.position);
             // _renderer.material.SetVector(ShaderPropLampPos, new Vector4(lampPos.x, lampPos.z, 0, 0));
-            _renderer.material.SetMatrix(ShaderPropLampM, _lampRenderer.localToWorldMatrix);
-        }
-        else
-        {
-            _renderer.material.SetMatrix(ShaderPropLampM, eolsCenter.localToWorldMatrix);
+            _renderer.sharedMaterial.SetMatrix(ShaderPropLampM, _lampRenderer.localToWorldMatrix);
         }
     }
 }

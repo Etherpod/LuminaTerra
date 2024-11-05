@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -44,7 +44,6 @@ public class Conductor : MonoBehaviour
         /*if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
             LuminaTerra.Instance.ModHelper.Console.WriteLine("start");
-            StartCoroutine(StartEOLS());
             startedSequence = true;
         }*/
         if (!startedSequence && Time.timeSinceLevelLoad > loopDuration - 32f)

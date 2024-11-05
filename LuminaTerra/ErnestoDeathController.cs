@@ -37,6 +37,6 @@ public class ErnestoDeathController : MonoBehaviour
 
     private void OnDestroy()
     {
-
+        _dialogue.OnEndConversation -= OnEndConversation;
     }
 }

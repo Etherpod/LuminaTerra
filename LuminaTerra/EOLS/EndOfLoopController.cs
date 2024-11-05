@@ -114,6 +114,16 @@ public class EndOfLoopController : MonoBehaviour
     public void StartEOLS()
     {
         gameObject.SetActive(true);
+        
+        ItemTool itemTool = Locator.GetPlayerCamera().GetComponentInChildren<ItemTool>();
+        if (itemTool.GetHeldItem() != null)
+        {
+            itemTool._waitForUnsocketAnimation = false;
+            itemTool.DropItemInstantly(
+                GameObject.Find("/ShimmeringHeart_Body/Sector").GetComponent<Sector>(),
+                GameObject.Find("/ShimmeringHeart_Body/Sector/LivingPlanet").transform
+            );
+        }
 
         var sector = GetComponentInParent<Sector>();
         FindObjectsOfType<EOLSTransferable>().ForEach(transferable =>
@@ -143,15 +153,6 @@ public class EndOfLoopController : MonoBehaviour
         
         stars.Simulate(22f);
         stars.Play();
-        ItemTool itemTool = Locator.GetPlayerCamera().GetComponentInChildren<ItemTool>();
-        if (itemTool.GetHeldItem() != null)
-        {
-            itemTool._waitForUnsocketAnimation = false;
-            itemTool.DropItemInstantly(
-                GameObject.Find("/ShimmeringHeart_Body/Sector").GetComponent<Sector>(),
-                GameObject.Find("/ShimmeringHeart_Body/Sector/LivingPlanet").transform
-            );
-        }
         
         var player = Locator.GetPlayerBody() as PlayerBody;
 

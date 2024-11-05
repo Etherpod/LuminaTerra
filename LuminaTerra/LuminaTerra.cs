@@ -13,6 +13,7 @@ namespace LuminaTerra
         public static LuminaTerra Instance;
         public INewHorizons NewHorizons;
         public ItemType CrystalItemType;
+        public bool inEndSequence;
 
         public delegate void SignalLearnEvent();
         public event SignalLearnEvent OnLearnHeartSignal;
@@ -54,6 +55,13 @@ namespace LuminaTerra
         public void LearnHeartSignal()
         {
             OnLearnHeartSignal?.Invoke();
+        }
+
+        public void ShowEndScreen()
+        {
+            GameOverController goController = FindObjectOfType<GameOverController>();
+            goController._deathText.text = "The Crystal Heart rejoices with you as glimmering stars return to the sky, and your old universe fades to dust.\nCould this be just a dream? A facade to escape the true fate of the universe?\nMaybe it doesn't matter. It is beautiful, after all.";
+            goController.SetupGameOverScreen(10f);
         }
     }
 

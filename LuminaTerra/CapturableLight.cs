@@ -24,7 +24,7 @@ public class CapturableLight : MonoBehaviour
     protected float _scale = 0f;
     protected virtual float FadeDurationMultiplier => 1f;
 
-    public bool IsBeingCaptured => _fader.TargetValue == 0;
+    public virtual bool IsBeingCaptured => _fader.TargetValue == 0;
 
     private void Awake()
     {

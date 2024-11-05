@@ -62,6 +62,7 @@ public class MysteriousDoorController : MonoBehaviour
         _nextRoomParent.SetActive(true);
         _oneShotAudio.pitch = 0.8f;
         _oneShotAudio.PlayOneShot(AudioType.Door_OpenStart);
+        GetComponentInParent<EndOfLoopController>().FadeOutWind();
         _fader.StartFade(_doorRenderer.material.GetFloat("_StarGlow"), 0f, 3f);
         enabled = true;
     }
@@ -77,6 +78,7 @@ public class MysteriousDoorController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _stars.Play();
         _loopingAudio.FadeIn(1f, true, true);
+        GetComponentInParent<EndOfLoopController>().PlayEndAudio();
         yield return new WaitForSeconds(2f);
         Locator.GetPlayerBody().AddImpulse(Locator.GetPlayerTransform().forward * 0.05f);
         OWInput.ChangeInputMode(InputMode.Character);
@@ -84,6 +86,8 @@ public class MysteriousDoorController : MonoBehaviour
         _lockOnTargeting.BreakLock();
         yield return new WaitForSeconds(1f);
         _animator.SetTrigger("Close");
+        yield return new WaitForSeconds(15f);
+        GetComponentInParent<EndOfLoopController>().TriggerEnd();
     }
 
     private void OnDoorCloseStart()

@@ -2,7 +2,9 @@
 using System.Linq;
 using DitzyExtensions.Collection;
 using LuminaTerra.EOLS;
+using LuminaTerra.Util;
 using UnityEngine;
+using static LuminaTerra.Util.Extensions;
 
 namespace LuminaTerra;
 
@@ -23,6 +25,7 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private GameObject[] refs = null;
     [SerializeField] private Transform heartTransform = null;
     [SerializeField] private EOLSGroundController bridgeGroundController = null;
+    [SerializeField] private OWAudioSource endAudio = null;
     
     private PlayerCameraEffectController _playerCameraEffectController;
     private Animator _sunAnimator;
@@ -31,6 +34,10 @@ public class EndOfLoopController : MonoBehaviour
     private OWLight2 _sunLightSource;
     private float _lastMusicTime;
     private bool _lastCapturingState = false;
+    private Fader _restoreFader = new();
+    private bool _hasRestored = false;
+    private Fader _endFader = new();
+    private bool _runningEnd = false;
 
     public static bool EnteredSequence = false;
 
@@ -72,6 +79,18 @@ public class EndOfLoopController : MonoBehaviour
 
     private void Update()
     {
+        if (_runningEnd)
+        {
+            //LTPrint("Fading");
+            _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = _endFader.Value;
+
+            if (!_endFader.IsFading)
+            {
+                LuminaTerra.Instance.ShowEndScreen();
+            }
+            return;
+        }
+
         if (_lastCapturingState != sunLight.IsBeingCaptured)
         {
             _lastCapturingState = sunLight.IsBeingCaptured;
@@ -92,7 +111,14 @@ public class EndOfLoopController : MonoBehaviour
         }
 
         float num = Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time);
-        if (sunLight.GetScale() > 0 && !sunLight.IsBeingCaptured)
+
+        if (_restoreFader.IsFading)
+        {
+            _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, _restoreFader.Value);
+            _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, _restoreFader.Value);
+            _playerCameraEffectController._owCamera.postProcessingSettings.vignette.intensity = Mathf.Lerp(0f, 0.6f, _restoreFader.Value);
+        }
+        else if (!_hasRestored)
         {
             _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.saturation = Mathf.Lerp(1f, 0f, num);
             _playerCameraEffectController._owCamera.postProcessingSettings.colorGrading.postExposure = Mathf.Lerp(1f, 0.2f, num);
@@ -105,7 +131,7 @@ public class EndOfLoopController : MonoBehaviour
             }
         }
 
-        if (!windAudio.isPlaying && num > 0)
+        else if (!windAudio.isPlaying && num > 0)
         {
             windAudio.FadeIn(15f, true, true);
         }
@@ -126,6 +152,14 @@ public class EndOfLoopController : MonoBehaviour
         }
 
         var sector = GetComponentInParent<Sector>();
+
+        /*ItemTool itemTool = Locator.GetPlayerCamera().GetComponentInChildren<ItemTool>();
+        if (itemTool.GetHeldItem() != null)
+        {
+            itemTool._waitForUnsocketAnimation = false;
+            itemTool.DropItemInstantly(sector, _conductor.transform);
+        }*/
+
         FindObjectsOfType<EOLSTransferable>().ForEach(transferable =>
         {
             if (!transferable.IsActivated) return;
@@ -193,6 +227,12 @@ public class EndOfLoopController : MonoBehaviour
     public void OnStartSunCapture()
     {
         _sunAnimator.StopPlayback();
+        sunLight.SetLastSunState(sunDeathProgress);
+        if (!_hasRestored)
+        {
+            _restoreFader.StartFade(Mathf.InverseLerp(ambientSound.clip.length - 20f, ambientSound.clip.length, ambientSound.time), 0f, 5f);
+            _hasRestored = true;
+        }
     }
 
     public void OnStopSunCapture()
@@ -203,6 +243,11 @@ public class EndOfLoopController : MonoBehaviour
     public float GetDistSqrFromHeart(Vector3 point)
     {
         return (heartTransform.position - point).sqrMagnitude;
+    }
+
+    public void FadeOutWind()
+    {
+        windAudio.FadeOut(5f);
     }
 
     private void OnGamePaused()
@@ -235,6 +280,20 @@ public class EndOfLoopController : MonoBehaviour
         {
             windAudio.FadeIn(4f);
         }
+    }
+
+    public void PlayEndAudio()
+    {
+        endAudio.FadeIn(3f);
+    }
+
+    public void TriggerEnd()
+    {
+        Locator.GetPromptManager().SetPromptsVisible(false);
+        ReticleController.Hide();
+        Locator.GetAudioMixer()._nonEndTimesVolume.FadeTo(0f, 5f);
+        _endFader.StartFade(_playerCameraEffectController._owCamera.postProcessingSettings.colorGradingDefault.postExposure, -10f, 5f);
+        _runningEnd = true;
     }
 
     private void OnDestroy()

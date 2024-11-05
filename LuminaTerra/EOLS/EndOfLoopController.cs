@@ -143,6 +143,15 @@ public class EndOfLoopController : MonoBehaviour
         
         stars.Simulate(22f);
         stars.Play();
+        ItemTool itemTool = Locator.GetPlayerCamera().GetComponentInChildren<ItemTool>();
+        if (itemTool.GetHeldItem() != null)
+        {
+            itemTool._waitForUnsocketAnimation = false;
+            itemTool.DropItemInstantly(
+                GameObject.Find("/LivingPlanet_Body/Sector").GetComponent<Sector>(),
+                GameObject.Find("/LivingPlanet_Body/Sector/LivingPlanet").transform
+            );
+        }
         
         var player = Locator.GetPlayerBody() as PlayerBody;
 

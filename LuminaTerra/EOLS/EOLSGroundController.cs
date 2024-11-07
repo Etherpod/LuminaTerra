@@ -42,14 +42,9 @@ public class EOLSGroundController : MonoBehaviour
     private void Update()
     {
         _renderer.material.SetMatrix(ShaderPropEolsMInverse, eolsCenter.worldToLocalMatrix);
-
-        // var centerPos = eolsCenter.InverseTransformVector(eolsCenter.position);
-        // _renderer.material.SetVector(ShaderPropEolsCenter, new Vector4(centerPos.x, centerPos.y, 0, 0));
         
         if (lampRequired && lamp && lamp.IsLit)
         {
-            // var lampPos = eolsCenter.transform.InverseTransformVector(lamp.transform.position);
-            // _renderer.material.SetVector(ShaderPropLampPos, new Vector4(lampPos.x, lampPos.z, 0, 0));
             _renderer.material.SetMatrix(ShaderPropLampM, _lampRenderer.localToWorldMatrix);
         }
         else

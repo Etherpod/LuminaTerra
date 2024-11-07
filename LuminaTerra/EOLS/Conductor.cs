@@ -17,16 +17,6 @@ public class Conductor : MonoBehaviour
 
     public bool InEndSequence => startedSequence;
 
-    /*private void Awake()
-    {
-        trigger.OnEntry += TriggerEntered;
-    }
-
-    private void OnDestroy()
-    {
-        trigger.OnEntry -= TriggerEntered;
-    }*/
-
     private void Awake()
     {
         GlobalMessenger.AddListener("GamePaused", OnGamePaused);
@@ -41,11 +31,12 @@ public class Conductor : MonoBehaviour
 
     private void Update()
     {
-        /*if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
+        if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
             LuminaTerra.Instance.ModHelper.Console.WriteLine("start");
             startedSequence = true;
-        }*/
+            endOfLoopController.StartEOLS();
+        }
         if (!startedSequence && Time.timeSinceLevelLoad > loopDuration - 32f)
         {
             StartCoroutine(StartEOLS());
@@ -105,11 +96,4 @@ public class Conductor : MonoBehaviour
             musicSource.FadeIn(2f);
         }
     }
-
-    /*private void TriggerEntered(GameObject hitObj)
-    {
-        if (!hitObj.CompareTag("PlayerDetector")) return;
-
-        endOfLoopController.StartEOLS();
-    }*/
 }

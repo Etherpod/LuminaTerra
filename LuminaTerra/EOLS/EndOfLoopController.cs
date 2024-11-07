@@ -24,7 +24,6 @@ public class EndOfLoopController : MonoBehaviour
     [SerializeField] private float sunDeathProgress = 0f;
     [SerializeField] private GameObject[] refs = null;
     [SerializeField] private Transform heartTransform = null;
-    [SerializeField] private EOLSGroundController bridgeGroundController = null;
     [SerializeField] private OWAudioSource endAudio = null;
     
     private PlayerCameraEffectController _playerCameraEffectController;
@@ -182,7 +181,7 @@ public class EndOfLoopController : MonoBehaviour
         var lamp = GetComponentInChildren<LAMP>();
         if (lamp)
         {
-            GetComponentsInChildren<EOLSGroundController>()
+            GetComponentsInChildren<EOLSGroundControllerEditor>()
                 .ForEach(gc => gc.SetLamp(lamp));
         }
         

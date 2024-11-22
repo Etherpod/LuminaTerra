@@ -114,16 +114,16 @@ public class RitualTableController : MonoBehaviour
             {
                 _loopingAudio.FadeOut(1f);
             }
-            if (item.TryGetComponent(out EOLSTransferable transfer))
-            {
-                transfer.SetEOLSActivation(false);
-                transfer.SetRitualActivation(false);
-            }
-            if (item is LAMP)
-            {
-                LAMP lamp = item as LAMP;
-                lamp.UpdateSignalState(false);
-            }
+            // if (item.TryGetComponent(out EOLSTransferable transfer))
+            // {
+            //     transfer.SetEOLSActivation(false);
+            //     transfer.SetRitualActivation(false);
+            // }
+            // if (item is LAMP)
+            // {
+            //     LAMP lamp = item as LAMP;
+            //     lamp.UpdateSignalState(false);
+            // }
         }
     }
 

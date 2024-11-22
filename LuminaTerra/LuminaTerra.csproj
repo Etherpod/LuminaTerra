@@ -12,6 +12,10 @@
     <Platforms>AnyCPU</Platforms>
     <RootNamespace>LuminaTerra</RootNamespace>
   </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'ForUnity' ">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup Label="user configs">
     <Content Include="LuminaTerra.csproj.user" />

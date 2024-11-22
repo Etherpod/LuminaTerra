@@ -1,4 +1,7 @@
 using System.Collections;
+using System.Linq;
+using DitzyExtensions.Collection;
+using NewHorizons.Utility;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,12 +34,44 @@ public class Conductor : MonoBehaviour
 
     private void Update()
     {
+#if DEBUG
         if (Keyboard.current.slashKey.wasPressedThisFrame && !startedSequence)
         {
-            LuminaTerra.Instance.ModHelper.Console.WriteLine("start");
             startedSequence = true;
             endOfLoopController.StartEOLS();
         }
+        if (Keyboard.current.rightShiftKey.wasPressedThisFrame && !startedSequence)
+        {
+            var table = GameObject.Find("/ShimmeringHeart_Body/Sector/LivingPlanet/RitualChamber/RitualTable");
+            var crystals = FindObjectsOfType<CrystalItem>().Where(c => c.gameObject.activeInHierarchy).AsList();
+            var lamp = FindObjectOfType<LAMP>();
+            var slot1 = table.FindChild("Slot1Detector");
+            var slot2 = table.FindChild("Slot2Detector");
+            var slot3 = table.FindChild("Slot3Detector");
+            var lampSlot = table.FindChild("ItemDetector");
+            lamp.transform.parent = lampSlot.transform;
+            lamp.transform.localPosition = Vector3.zero;
+            lamp.transform.localRotation = Quaternion.identity;
+            crystals.ForEach(crystal =>
+            {
+                crystal.transform.parent = crystal.name switch
+                {
+                    "RedCrystal_Item" => slot1.transform,
+                    "BlueCrystal_Item" => slot2.transform,
+                    "PurpleCrystal_Item" => slot3.transform,
+                    _ => crystal.transform.parent
+                };
+
+                crystal.transform.localPosition = Vector3.zero;
+                crystal.transform.localRotation = Quaternion.identity;
+                crystal.SetCharged(true, 0);
+            });
+            var p = Locator.GetPlayerBody();
+            p.SetPosition(table.transform.position);
+            p.SetRotation(table.transform.rotation);
+            p.SetVelocity(table.GetAttachedOWRigidbody().GetVelocity());
+        }
+#endif
         if (!startedSequence && Time.timeSinceLevelLoad > loopDuration - 32f)
         {
             StartCoroutine(StartEOLS());

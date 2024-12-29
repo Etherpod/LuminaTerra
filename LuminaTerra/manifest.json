@@ -4,7 +4,7 @@
   "author": "Etherpod & ditzy",
   "name": "Lumina Terra",
   "uniqueName": "Etherpod.LuminaTerra",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "owmlVersion": "2.13.0",
-  "dependencies": ["xen.NewHorizons"]
+  "dependencies": [ "xen.NewHorizons", "Etherpod.TravelersPack" ]
 }

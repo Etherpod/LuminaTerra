@@ -35,6 +35,7 @@ public class LAMP : OWItem
     private OWTriggerVolume _triggerVolume;
     private CapturableLight _lightController;
     private ScreenPrompt _suckPrompt;
+    private ScreenPrompt _suckPromptImportant;
 
     private readonly IDictionary<int, CapturableLight> _capturedLights = new Dictionary<int, CapturableLight>(8);
     private readonly List<ItemDetector> _currentDetectors = [];
@@ -44,6 +45,7 @@ public class LAMP : OWItem
     private bool _isOpen = false;
     private bool _isReleasing = false;
     private bool _firstPlayerInput = true;
+    private bool _hasEverUsed = false;
 
     public override string GetDisplayName() => "Lantern";
 
@@ -72,6 +74,8 @@ public class LAMP : OWItem
         enabled = false;
         _suckPrompt = new ScreenPrompt(InputLibrary.toolActionSecondary, "<CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt)
             + "   " + "Open Lantern", 0, ScreenPrompt.DisplayState.Normal, false);
+        _suckPromptImportant = new ScreenPrompt(InputLibrary.toolActionSecondary, "<CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt)
+            + "   " + "Open Lantern", 0, ScreenPrompt.DisplayState.Attention, false);
         LuminaTerra.Instance.ModHelper.Events.Unity.RunWhen(() => captureParticleSystem.isEmitting, captureParticleSystem.Stop);
     }
 
@@ -213,6 +217,13 @@ public class LAMP : OWItem
         {
             ReleaseLights();
         }
+
+        if (!_hasEverUsed)
+        {
+            Locator.GetPromptManager().RemoveScreenPrompt(_suckPromptImportant);
+            Locator.GetPromptManager().AddScreenPrompt(_suckPrompt, PromptPosition.UpperRight, true);
+            _hasEverUsed = true;
+        }
     }
 
     private void CaptureLights()
@@ -319,7 +330,14 @@ public class LAMP : OWItem
 
         _lightVolumeShape.radius = _originalLightVolumeShapeScale;
 
-        Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
+        if (!_hasEverUsed)
+        {
+            Locator.GetPromptManager().RemoveScreenPrompt(_suckPromptImportant);
+        }
+        else
+        {
+            Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
+        }
     }
 
     public override void PickUpItem(Transform holdTranform)
@@ -338,13 +356,27 @@ public class LAMP : OWItem
 
         _lightVolumeShape.radius = _originalLightVolumeShapeScale / holdTranform.localScale.x;
 
-        Locator.GetPromptManager().AddScreenPrompt(_suckPrompt, PromptPosition.UpperRight, true);
+        if (!_hasEverUsed)
+        {
+            Locator.GetPromptManager().AddScreenPrompt(_suckPromptImportant, PromptPosition.Center, true);
+        }
+        else
+        {
+            Locator.GetPromptManager().AddScreenPrompt(_suckPrompt, PromptPosition.UpperRight, true);
+        }
     }
 
     public override void SocketItem(Transform socketTransform, Sector sector)
     {
         base.SocketItem(socketTransform, sector);
         enabled = false;
-        Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
+        if (!_hasEverUsed)
+        {
+            Locator.GetPromptManager().RemoveScreenPrompt(_suckPromptImportant);
+        }
+        else
+        {
+            Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
+        }
     }
 }

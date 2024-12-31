@@ -12,6 +12,7 @@ namespace LuminaTerra
     {
         public static LuminaTerra Instance;
         public INewHorizons NewHorizons;
+        public ITravelersPackAPI TravelersPack;
         public ItemType CrystalItemType;
         public bool inEndSequence;
 
@@ -36,6 +37,7 @@ namespace LuminaTerra
             // Get the New Horizons API and load configs
             NewHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
             NewHorizons.LoadConfigs(this);
+            TravelersPack = ModHelper.Interaction.TryGetModApi<ITravelersPackAPI>("Etherpod.TravelersPack");
 
             CrystalItemType = EnumUtils.Create<ItemType>("Crystal");
 

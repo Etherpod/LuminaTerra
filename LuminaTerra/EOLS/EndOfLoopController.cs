@@ -187,6 +187,9 @@ public class EndOfLoopController : MonoBehaviour
         
         stars.Simulate(22f);
         stars.Play();
+
+        LuminaTerra.Instance.TravelersPack.RemoveAllItems();
+        LuminaTerra.Instance.TravelersPack.SetPlacingEnabled(false);
         
         var player = Locator.GetPlayerBody() as PlayerBody;
 

@@ -340,4 +340,11 @@ public class LAMP : OWItem
 
         Locator.GetPromptManager().AddScreenPrompt(_suckPrompt, PromptPosition.UpperRight, true);
     }
+
+    public override void SocketItem(Transform socketTransform, Sector sector)
+    {
+        base.SocketItem(socketTransform, sector);
+        enabled = false;
+        Locator.GetPromptManager().RemoveScreenPrompt(_suckPrompt);
+    }
 }
